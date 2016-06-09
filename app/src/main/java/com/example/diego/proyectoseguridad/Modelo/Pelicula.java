@@ -1,5 +1,6 @@
 package com.example.diego.proyectoseguridad.Modelo;
 
+<<<<<<< HEAD
 import android.database.Cursor;
 
 import java.util.ArrayList;
@@ -40,6 +41,39 @@ public class Pelicula {
 
     public Pelicula(){
 
+=======
+/**
+ * Created by victor on 08/06/2016.
+ */
+public class Pelicula
+{
+    //Variables
+    private int idPelicula;
+    private String nombre;
+    private String sinopsis;
+    private String imagen;
+
+    //Constructor vací
+    public Pelicula() {
+    }
+
+    //Constructor con parámetros
+    public Pelicula(int idPelicula, String nombre, String sinopsis, String imagen) {
+        this.idPelicula = idPelicula;
+        this.nombre = nombre;
+        this.sinopsis = sinopsis;
+        this.imagen = imagen;
+    }
+
+    //Métodos set y get
+
+    public int getIdPelicula() {
+        return idPelicula;
+    }
+
+    public void setIdPelicula(int idPelicula) {
+        this.idPelicula = idPelicula;
+>>>>>>> f9e3149aa43b47716312014a1296c7ab4bd824dd
     }
 
     public String getNombre() {
@@ -58,6 +92,7 @@ public class Pelicula {
         this.sinopsis = sinopsis;
     }
 
+<<<<<<< HEAD
     public String getUrlImagen() {
         return urlImagen;
     }
@@ -96,5 +131,13 @@ public class Pelicula {
         }
 
         return sGeneros;
+=======
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+>>>>>>> f9e3149aa43b47716312014a1296c7ab4bd824dd
     }
 }
