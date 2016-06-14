@@ -35,16 +35,15 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        /*LinearLayout linearLayout=(LinearLayout) findViewById(R.id.linearlayout);
-        LayoutInflater layoutInflater= LayoutInflater.from(this);
-        View view= layoutInflater.inflate(R.layout.nav_header_main,linearLayout,false);
 
-        usuarioCorreo=(TextView)view.findViewById(R.id.usuarioCorreo);
 
-        String correo=getIntent().getStringExtra("correo");
 
-        usuarioCorreo.setText(correo);
-        System.out.println("------------> "+ usuarioCorreo.getText());*/
+
+
+       // usuarioCorreo.setText(correo);
+       // System.out.println("------------> "+ usuarioCorreo.getText());
+
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,6 +58,10 @@ public class MainActivity extends AppCompatActivity
          drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
          NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
          navigationView.setNavigationItemSelectedListener(this);
+
+        View view = navigationView.getHeaderView(0);
+        usuarioCorreo=(TextView)view.findViewById(R.id.usuarioCorreo);
+        usuarioCorreo.setText(getIntent().getStringExtra("correo"));
 
     }
 
