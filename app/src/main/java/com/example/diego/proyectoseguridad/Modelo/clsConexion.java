@@ -68,4 +68,11 @@ public class clsConexion extends SQLiteAssetHelper{
         return cursor;
     }
 
+    public Cursor consultarUsuario(String usuario,String clave){
+
+        Cursor cursor=bd.rawQuery("Select * from tbUsuarios where nombre= ? and contrasena= ?",new String[]{usuario,clave});
+
+        return cursor;
+    }
+
 }
