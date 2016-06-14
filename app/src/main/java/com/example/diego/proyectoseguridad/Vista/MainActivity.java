@@ -117,5 +117,7 @@ public class MainActivity extends AppCompatActivity
             itemDrawer.setChecked(true);
             getSupportActionBar().setTitle(itemDrawer.getTitle());
         }
+
+
     }
 }
