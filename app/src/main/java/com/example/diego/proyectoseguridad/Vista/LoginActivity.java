@@ -116,9 +116,13 @@ public class LoginActivity extends AppCompatActivity{
 
         return estado;
 
+    }//fin del metodo autenticar
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
     }
-
-
-
 }
 

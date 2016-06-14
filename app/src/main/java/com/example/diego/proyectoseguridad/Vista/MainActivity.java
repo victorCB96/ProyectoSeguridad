@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -112,7 +113,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = itemDrawer.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_peliculas) {
 
             fragmento = new FragmentClasificaciones();
             // Handle the camera action
@@ -120,12 +121,11 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_slideshow) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_settings) {
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_exit_session) {
+            Intent intent= new Intent(this,LoginActivity.class);
+            startActivity(intent);
         }
 
         if(fragmento != null){
@@ -137,7 +137,15 @@ public class MainActivity extends AppCompatActivity
             itemDrawer.setChecked(true);
             getSupportActionBar().setTitle(itemDrawer.getTitle());
         }
-
-
     }
+
+    /*@Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode){
+            case KeyEvent.KEYCODE_BACK:
+                return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }*/
 }

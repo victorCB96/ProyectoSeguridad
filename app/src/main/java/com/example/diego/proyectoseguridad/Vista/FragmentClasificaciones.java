@@ -35,7 +35,7 @@ public class FragmentClasificaciones extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_clasificaciones, container, false);
         viewPager = (ViewPager) view.findViewById(R.id.view_pager);
-        pestañas.setSelectedTabIndicatorColor(Color.BLUE);
+//        pestañas.setSelectedTabIndicatorColor(Color.BLUE);
 
         appBarLayout = (AppBarLayout) ((View)container.getParent()).findViewById(R.id.appBar_layout);
         pestañas = new TabLayout(getActivity());
