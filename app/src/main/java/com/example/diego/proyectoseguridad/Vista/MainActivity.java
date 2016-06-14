@@ -1,10 +1,12 @@
 package com.example.diego.proyectoseguridad.Vista;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,6 +16,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.diego.proyectoseguridad.R;
 
@@ -21,11 +25,25 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
+    private TextView usuarioCorreo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+        /*LinearLayout linearLayout=(LinearLayout) findViewById(R.id.linearlayout);
+        LayoutInflater layoutInflater= LayoutInflater.from(this);
+        View view= layoutInflater.inflate(R.layout.nav_header_main,linearLayout,false);
+
+        usuarioCorreo=(TextView)view.findViewById(R.id.usuarioCorreo);
+
+        String correo=getIntent().getStringExtra("correo");
+
+        usuarioCorreo.setText(correo);
+        System.out.println("------------> "+ usuarioCorreo.getText());*/
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -42,6 +60,8 @@ public class MainActivity extends AppCompatActivity
          navigationView.setNavigationItemSelectedListener(this);
 
     }
+
+
 
     @Override
     public void onBackPressed() {

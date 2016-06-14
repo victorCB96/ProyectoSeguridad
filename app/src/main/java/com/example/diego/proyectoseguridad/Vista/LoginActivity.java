@@ -54,6 +54,7 @@ public class LoginActivity extends AppCompatActivity{
     private Button login;
     private clsConexion conexion;
     private Cursor consulta;
+    private String usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,25 +64,30 @@ public class LoginActivity extends AppCompatActivity{
         email=(AutoCompleteTextView)findViewById(R.id.email);
         password=(EditText)findViewById(R.id.password);
         login=(Button)findViewById(R.id.btnLogin);
+
         login.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Intent mainIntent = new Intent().setClass(
-                        v.getContext(), MainActivity.class);
+
                 if(autenticar()){
-                    startActivity(mainIntent);
+                    prueba();
                 }else{
                     Snackbar.make(v,"No existe el usuario", Snackbar.LENGTH_LONG).show();
                 }
             }
         });
+    }
 
-
+    private void prueba(){
+        Intent mainIntent = new Intent().setClass(
+                this, MainActivity.class);
+        mainIntent.putExtra("correo",usuario);
+        startActivity(mainIntent);
     }
 
     public boolean autenticar(){
-        String usuario=email.getText().toString();
+         usuario=email.getText().toString();
         String clave=password.getText().toString();
         String usuariodb="";
         String clavedb="";
@@ -95,7 +101,9 @@ public class LoginActivity extends AppCompatActivity{
                 clavedb=consulta.getString(2);
             }
             if (usuario.equals(usuariodb)&& clave.equals(clavedb)){
+
                 estado= true;
+
             }else {
                 estado= false;
             }
