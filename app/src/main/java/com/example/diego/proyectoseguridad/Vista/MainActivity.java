@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_exit_session) {
+            finish();
             Intent intent= new Intent(this,LoginActivity.class);
             startActivity(intent);
         }

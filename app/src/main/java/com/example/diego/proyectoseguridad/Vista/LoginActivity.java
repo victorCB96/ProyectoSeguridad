@@ -1,93 +1,74 @@
 package com.example.diego.proyectoseguridad.Vista;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
-import android.support.annotation.NonNull;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-
-import android.os.Build;
-import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.diego.proyectoseguridad.Modelo.clsConexion;
 import com.example.diego.proyectoseguridad.R;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.ConfirmEmail;
+import com.mobsandgeeks.saripaar.annotation.Email;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity{
+public class LoginActivity extends AppCompatActivity implements Validator.ValidationListener{
 
 
     // UI references.
+    @Email(message = "Escriba un correo valido")
+    @NotEmpty(message = "No puede dejar este campo vacío")
     private AutoCompleteTextView email;
+    @NotEmpty(message = "Escriba una contraseña")
     private EditText password;
-    private View mProgressView;
-    private View mLoginFormView;
     private Button login;
     private clsConexion conexion;
     private Cursor consulta;
     private String usuario;
+    private Validator validator;
+    private View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //Inicializacion de los elementos del xml
         email=(AutoCompleteTextView)findViewById(R.id.email);
         password=(EditText)findViewById(R.id.password);
         login=(Button)findViewById(R.id.btnLogin);
+
+        validator = new Validator(this);
+        validator.setValidationListener(this);
 
         login.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-
-                if(autenticar()){
-                    prueba();
-                }else{
-                    Snackbar.make(v,"No existe el usuario", Snackbar.LENGTH_LONG).show();
-                }
+                view=v;
+                validator.validate();
             }
         });
-    }
 
-    private void prueba(){
-        Intent mainIntent = new Intent().setClass(
-                this, MainActivity.class);
-        mainIntent.putExtra("correo",usuario);
-        startActivity(mainIntent);
+
     }
 
     public boolean autenticar(){
-         usuario=email.getText().toString();
+        usuario=email.getText().toString();
         String clave=password.getText().toString();
         String usuariodb="";
         String clavedb="";
@@ -101,14 +82,10 @@ public class LoginActivity extends AppCompatActivity{
                 clavedb=consulta.getString(2);
             }
             if (usuario.equals(usuariodb)&& clave.equals(clavedb)){
-
                 estado= true;
-
             }else {
                 estado= false;
             }
-
-
         }catch (CursorIndexOutOfBoundsException err){
             Toast.makeText(this,"Ocurrió un error fatal",
                     Toast.LENGTH_SHORT).show();
@@ -123,6 +100,43 @@ public class LoginActivity extends AppCompatActivity{
     protected void onPause() {
         super.onPause();
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AutoCompleteTextView email=null;
+        EditText password=null;
+        Button login=null;
+        clsConexion conexion=null;
+        Cursor consulta=null;
+        String usuario="";
+    }
+
+    @Override
+    public void onValidationSucceeded() {
+
+        if(autenticar()){
+            Intent mainIntent = new Intent(view.getContext(), MainActivity.class);
+            mainIntent.putExtra("correo",usuario);
+            startActivity(mainIntent);
+        }else{
+            Snackbar.make(view,"No existe el usuario", Snackbar.LENGTH_LONG).show();
+        }
+
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        for(ValidationError error : errors){
+            View view = error.getView();
+            String mensaje = error.getCollatedErrorMessage(this);
+
+            if(view instanceof  EditText ){
+                ((EditText) view).setError(mensaje);
+            }
+        }
+
     }
 }
 
