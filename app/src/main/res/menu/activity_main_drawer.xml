@@ -7,9 +7,9 @@
             android:icon="@drawable/icono_peliculas"
             android:title="Peliculas" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:id="@+id/nav_usuarios"
+            android:icon="@drawable/user_male_48"
+            android:title="Gestión de usuarios" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"

@@ -11,6 +11,7 @@ public class clsManejoUsuarios {
     private clsConexion conexion;
 
     public static final String TABLA_USUARIOS="tbUsuarios";
+    public static final String TABLA_ROLUSUARIO="tbRolUsuario";
 
     public clsManejoUsuarios(Context context)
     {

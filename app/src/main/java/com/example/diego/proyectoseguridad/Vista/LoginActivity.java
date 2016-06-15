@@ -17,7 +17,6 @@ import com.example.diego.proyectoseguridad.Modelo.clsConexion;
 import com.example.diego.proyectoseguridad.R;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
-import com.mobsandgeeks.saripaar.annotation.ConfirmEmail;
 import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
@@ -30,7 +29,6 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
 
     // UI references.
-    @Email(message = "Escriba un correo valido")
     @NotEmpty(message = "No puede dejar este campo vacío")
     private AutoCompleteTextView email;
     @NotEmpty(message = "Escriba una contraseña")

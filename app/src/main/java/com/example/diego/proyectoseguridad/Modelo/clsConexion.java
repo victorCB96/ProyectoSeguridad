@@ -12,12 +12,12 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
  */
 public class clsConexion extends SQLiteAssetHelper{
 
-    private static String baseDatos="BDProyectoPeliculas.db";
+    private static String BASE_DATOS="BDProyectoPeliculas.db";
     private SQLiteDatabase bd;
 
 
     public clsConexion(Context context) {
-        super(context, baseDatos, null, 1);
+        super(context, BASE_DATOS, null, 1);
         bd=getReadableDatabase();
     }
 
