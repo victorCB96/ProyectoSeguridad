@@ -34,17 +34,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
 
-
-
-
-
-
-
-       // usuarioCorreo.setText(correo);
-       // System.out.println("------------> "+ usuarioCorreo.getText());
-
-
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
