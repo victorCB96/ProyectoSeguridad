@@ -19,6 +19,7 @@ public class clsConexion extends SQLiteAssetHelper{
     public clsConexion(Context context) {
         super(context, BASE_DATOS, null, 1);
         bd=getReadableDatabase();
+        bd.execSQL("PRAGMA foreign_keys=ON");
     }
 
     public boolean mInsertar(ContentValues valores,String nombreTabla)
