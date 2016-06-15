@@ -17,10 +17,10 @@ public class clsManejoPeliculas {
         this.conexion=new clsConexion(context);
     }
 
-    public Cursor getGenerosPeliculas()
+    public Cursor getGenerosPeliculas(Pelicula pelicula)
     {
         String query;
-        query="select g.genero from tbGeneros g inner join tbGeneroPelicula gp on(g.idGenero=gp.idGenero) group by(gp.idPelicula)";
+        query="select g.genero gp.idPelicula from tbGeneros g inner join tbGeneroPelicula gp on(g.idGenero=gp.idGenero) where gp.idPelicula='"+pelicula.getIdPelicula()+"'";
         return conexion.mConsultar(query);
     }
 }
