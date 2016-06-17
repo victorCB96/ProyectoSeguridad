@@ -2,6 +2,7 @@ package com.example.diego.proyectoseguridad.Vista;
 
 
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.diego.proyectoseguridad.R;
+import com.example.diego.proyectoseguridad.Modelo.clsManejadorVentanas;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,7 +24,6 @@ public class FragmentClasificaciones extends Fragment {
     private AppBarLayout appBarLayout;
     private TabLayout pestañas;
     private ViewPager viewPager;
-
 
     public FragmentClasificaciones() {
         // Required empty public constructor
@@ -49,12 +50,13 @@ public class FragmentClasificaciones extends Fragment {
     }
 
     private void poblarTab(){
+        clsManejadorVentanas manejadorVentanas=new clsManejadorVentanas(getActivity());
         AdaptadorSecciones adaptadorSecciones = new AdaptadorSecciones(getFragmentManager());
+        Cursor cursor=manejadorVentanas.getNombreVentanas();
 
-        adaptadorSecciones.addFragment(new FragmentPeliculas(), "Para todo publico");
-        adaptadorSecciones.addFragment(new FragmentPeliculas(), "Supervisión de adulto");
-        adaptadorSecciones.addFragment(new FragmentPeliculas(), "+12");
-        adaptadorSecciones.addFragment(new FragmentPeliculas(), "+18");
+        while (cursor.moveToNext()) {
+            adaptadorSecciones.addFragment(new FragmentPeliculas(), cursor.getString(1));
+        }
         viewPager.setAdapter(adaptadorSecciones);
     }
 
