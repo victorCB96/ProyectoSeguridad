@@ -79,10 +79,8 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
                 usuariodb=consulta.getString(1);
                 clavedb=consulta.getString(2);
             }
-            if (usuario.equals(usuariodb)&& clave.equals(clavedb)){
+            if(consulta.getCount()!=0){
                 estado= true;
-            }else {
-                estado= false;
             }
         }catch (CursorIndexOutOfBoundsException err){
             Toast.makeText(this,"Ocurrió un error fatal",
