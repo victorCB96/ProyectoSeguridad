@@ -23,7 +23,7 @@
             android:src="@drawable/ic_icon_agregar"
             app:elevation="5dp"
             app:useCompatPadding="true"
-            app:backgroundTint="@color/primary"
+            app:backgroundTint="@color/colorPrimary"
             android:id="@+id/btn_agregarUsuario"
             />
     </RelativeLayout>

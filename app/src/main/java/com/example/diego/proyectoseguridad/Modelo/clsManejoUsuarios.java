@@ -49,4 +49,6 @@ public class clsManejoUsuarios {
         return conexion.mConsultar(query);
     }
 
+
+
 }

@@ -76,4 +76,12 @@ public class clsConexion extends SQLiteAssetHelper{
         return cursor;
     }
 
+    public Cursor getUsuarioEspecifico(String usuario){
+        //String query;
+        //query=String.format("Select * from tbUsuarios where nombre= ?",new String[]{usuario});
+        //
+
+        return bd.rawQuery("Select * from tbUsuarios where nombre= ?",new String[]{usuario});
+    }
+
 }
