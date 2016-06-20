@@ -46,4 +46,15 @@ public class clsManejoRoles {
         return conexion.mConsultar(query);
     }
 
+    public Cursor consultarRoles(String idUsuario){
+        String query="select u.idUsuario,r.idRol,v.idVentana from tbRoles r, tbUsuarios u, tbVentanas v, tbRolUsuario ru, tbRolVentana rv " +
+                "where u.idUsuario=ru.idUsuario and ru.idRol=r.idRol " +
+                "and v.idVentana=rv.idVentana and rv.idRol=r.idRol " +
+                "and u.idUsuario=? "+
+                "group by v.idVentana, r.idRol,u.idUsuario;";
+        Cursor cursor=conexion.mConsultarVariasTablas(query,idUsuario);
+
+        return cursor;
+    }
+
 }

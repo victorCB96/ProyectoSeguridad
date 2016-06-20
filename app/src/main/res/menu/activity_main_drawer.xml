@@ -19,6 +19,11 @@
     <item android:title="Configuraciones">
         <menu>
             <item
+                android:id="@+id/nav_prueba"
+                android:icon="@drawable/user_male_48"
+                android:title="prueba"
+                android:enabled="true"/>
+            <item
                 android:id="@+id/nav_settings"
                 android:icon="@drawable/settings_52"
                 android:title="Ajustes" />
