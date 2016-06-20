@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity
         int idRol=0,idVentana=0,usuario=0;
         consulta= roles.consultarRoles(idUsuario);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        MenuItem item = navigationView.getMenu().getItem(2);
+        MenuItem item = navigationView.getMenu().getItem(1);
 
 
         try {
