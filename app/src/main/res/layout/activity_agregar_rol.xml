@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".Vista.AgregarRolActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="1dp"
+        android:layout_centerInParent="true">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimary"
+            >
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre del Rol"
+                android:id="@+id/etRol"
+                android:padding="16dp"
+                android:maxLines="1"
+                android:singleLine="true"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:text="Ventanas Disponibles"/>
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:text="Apto para todo Publico"
+            android:id="@+id/chPublico"/>
+        <android.support.v7.widget.AppCompatCheckBox
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:text="Supervision de Adultos"
+            android:id="@+id/chSupervision"/>
+        <android.support.v7.widget.AppCompatCheckBox
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:text="+12"
+            android:id="@+id/ch12"/>
+        <android.support.v7.widget.AppCompatCheckBox
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:text="+18"
+            android:id="@+id/ch18"/>
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:text="Opciones Administrativas"/>
+        <android.support.v7.widget.AppCompatCheckBox
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:text="Gestion Usuarios"
+            android:id="@+id/chUsuarios"/>
+        <android.support.v7.widget.AppCompatCheckBox
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:text="Gestion Seguridad"
+            android:id="@+id/chSeguridad"/>
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="250dp"
+            android:layout_height="30dp"
+
+            android:text="Acciones dentro de las Ventanas"/>
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:orientation="vertical"
+            android:layout_centerInParent="true">
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:text="Ver"
+                android:id="@+id/chVer"
+                android:layout_row="0"
+                android:layout_column="0" />
+            <android.support.v7.widget.AppCompatCheckBox
+                android:layout_width="90dp"
+                android:layout_height="30dp"
+                android:text="Insertar"
+                android:id="@+id/chInsertar"
+                android:layout_row="0"
+                android:layout_column="1" />
+            <android.support.v7.widget.AppCompatCheckBox
+                android:layout_width="95dp"
+                android:layout_height="30dp"
+                android:text="Modificar"
+                android:id="@+id/chModificar"
+                android:layout_row="0"
+                android:layout_column="2" />
+            <android.support.v7.widget.AppCompatCheckBox
+                android:layout_width="90dp"
+                android:layout_height="30dp"
+                android:text="Eliminar"
+                android:id="@+id/chEliminar"
+                android:layout_row="0"
+                android:layout_column="3" />
+
+        </GridLayout>
+
+        <Button
+            android:id="@+id/btnAgregar"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:text="Agregar"
+            android:textColor="@color/secondary_text"
+            android:textStyle="bold"
+            android:backgroundTint="@color/colorPrimary"
+            />
+    </LinearLayout>
+
+</RelativeLayout>

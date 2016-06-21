@@ -48,15 +48,15 @@ public class GestionSeguridadFragment extends Fragment {
         this.incializarAdaptador();
 
         btnDetalle= (ImageButton) view.findViewById(R.id.btn_detalle_usuario);
-        btn_agregarRol= (FloatingActionButton) view.findViewById(R.id.btn_agregarUsuario);
+        btn_agregarRol= (FloatingActionButton) view.findViewById(R.id.btn_agregarRol);
 
-       /* btn_agregarRol.setOnClickListener(new View.OnClickListener() {
+       btn_agregarRol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 iniciarRegistro();
             }
         });
-*/
+
         return view;
 
     }
@@ -82,11 +82,11 @@ public class GestionSeguridadFragment extends Fragment {
         }*/
     }
 
-   /* private void iniciarRegistro(){
-        Intent intent = new Intent(getActivity(),AgregarUsuarioActivity.class);
+    private void iniciarRegistro(){
+        Intent intent = new Intent(getActivity(),AgregarRolActivity.class);
         startActivityForResult(intent,ACTIVIDAD_AGREGAR_REQUEST);
     }
-*/
+
 
     private void incializarAdaptador(){
         Cursor usuarios= manejoRoles.getRol();
