@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity
         consulta= roles.consultarRoles(idUsuario);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         MenuItem item = navigationView.getMenu().getItem(1);
+        MenuItem item2 = navigationView.getMenu().getItem(2);
 
 
         try {
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity
                 }else{
 
                     item.setEnabled(false);
+                    item2.setEnabled(false);
                 }
 
             }else {
@@ -152,8 +154,8 @@ public class MainActivity extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.nav_usuarios) {
             fragmento= new GestionUsuariosFragment();
-        } else if (id == R.id.nav_slideshow) {
-
+        } else if (id == R.id.nav_roles) {
+            fragmento= new GestionSeguridadFragment();
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_exit_session) {

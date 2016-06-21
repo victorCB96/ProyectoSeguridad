@@ -57,4 +57,12 @@ public class clsManejoRoles {
         return cursor;
     }
 
+    /*public Cursor consultarRoles(){
+        String query="select idRol from tbRolUsuario where nombre=? ";
+        Cursor cursor=conexion.mConsultarVariasTablas(query,idUsuario);
+
+        return cursor;
+    }
+    */
+
 }
