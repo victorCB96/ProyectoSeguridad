@@ -37,6 +37,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
     private clsConexion conexion;
     private Cursor consulta;
     private String usuario;
+    private int idUsuario;
     private Validator validator;
     private View view;
 
@@ -76,6 +77,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
         try {
             for(consulta.moveToFirst(); !consulta.isAfterLast(); consulta.moveToNext()){
+                idUsuario=consulta.getInt(0);
                 usuariodb=consulta.getString(1);
                 clavedb=consulta.getString(2);
             }
@@ -115,6 +117,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         if(autenticar()){
             Intent mainIntent = new Intent(view.getContext(), MainActivity.class);
             mainIntent.putExtra("correo",usuario);
+            mainIntent.putExtra("idUsuario",idUsuario);
             startActivity(mainIntent);
         }else{
             Snackbar.make(view,"No existe el usuario", Snackbar.LENGTH_LONG).show();

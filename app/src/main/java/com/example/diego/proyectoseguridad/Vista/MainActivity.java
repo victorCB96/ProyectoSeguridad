@@ -1,9 +1,13 @@
 package com.example.diego.proyectoseguridad.Vista;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.support.v7.view.menu.MenuView;
+import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,7 +17,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.diego.proyectoseguridad.Modelo.clsManejoRoles;
 import com.example.diego.proyectoseguridad.R;
 
 public class MainActivity extends AppCompatActivity
@@ -21,6 +27,8 @@ public class MainActivity extends AppCompatActivity
 
     private DrawerLayout drawer;
     private TextView usuarioCorreo;
+    private int idUsuario; //este es el id de la consulta del login que sirve para obtener el rol en habilitarVentanas.
+    private Cursor consulta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +53,45 @@ public class MainActivity extends AppCompatActivity
         View view = navigationView.getHeaderView(0);
         usuarioCorreo=(TextView)view.findViewById(R.id.usuarioCorreo);
         usuarioCorreo.setText(getIntent().getStringExtra("correo"));
+        idUsuario=getIntent().getIntExtra("idUsuario",0);
+        this.habilitarVentanas(view,String.valueOf(idUsuario));
+
+    }
+
+    public void habilitarVentanas(View view,String idUsuario){
+        clsManejoRoles roles = new clsManejoRoles(view.getContext());
+        int idRol=0,idVentana=0,usuario=0;
+        consulta= roles.consultarRoles(idUsuario);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        MenuItem item = navigationView.getMenu().getItem(1);
+
+
+        try {
+            for(consulta.moveToFirst(); !consulta.isAfterLast(); consulta.moveToNext()){
+                usuario=consulta.getInt(0);
+                idRol=consulta.getInt(1);
+                idVentana=consulta.getInt(2);
+            }
+            if (consulta!=null){
+                // metodo que habilita las ventanas correpondientes
+                if(usuario==1) {
+                    //MenuView.ItemView item = (MenuView.ItemView) view.findViewById(R.id.nav_prueba);
+                    //item.setEnabled(true);
+                    Toast.makeText(this,"entro admin",
+                            Toast.LENGTH_SHORT).show();
+                }else{
+
+                    item.setEnabled(false);
+                }
+
+            }else {
+                Toast.makeText(this,"Ocurrió un error fatal, Cursor vacio!",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }catch (CursorIndexOutOfBoundsException err){
+            Toast.makeText(this,"Ocurrió un error fatal"+err,
+                    Toast.LENGTH_SHORT).show();
+        }//Fin del try catch
 
     }
 
