@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.view.menu.MenuView;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -19,6 +20,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.diego.proyectoseguridad.Modelo.Usuario;
 import com.example.diego.proyectoseguridad.Modelo.clsManejoRoles;
 import com.example.diego.proyectoseguridad.R;
 
@@ -27,14 +29,13 @@ public class MainActivity extends AppCompatActivity
 
     private DrawerLayout drawer;
     private TextView usuarioCorreo;
-    private int idUsuario; //este es el id de la consulta del login que sirve para obtener el rol en habilitarVentanas.
     private Cursor consulta;
+    private Usuario usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -45,16 +46,24 @@ public class MainActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        usuario = getIntent().getParcelableExtra(LoginActivity.USUARIO);
+        Log.i("Usuario main",usuario.getNombre());
 
-         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-         navigationView.setNavigationItemSelectedListener(this);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
-        View view = navigationView.getHeaderView(0);
-        usuarioCorreo=(TextView)view.findViewById(R.id.usuarioCorreo);
-        usuarioCorreo.setText(getIntent().getStringExtra("correo"));
-        idUsuario=getIntent().getIntExtra("idUsuario",0);
-        this.habilitarVentanas(view,String.valueOf(idUsuario));
+
+        if (navigationView != null) {
+            navigationView.setNavigationItemSelectedListener(this);
+            View view = navigationView.getHeaderView(0);
+
+            if (view != null) {
+                usuarioCorreo=(TextView) view.findViewById(R.id.usuarioCorreo);
+                usuarioCorreo.setText(usuario.getNombre());
+                this.habilitarVentanas(view,String.valueOf(usuario.getIdUsuario()));
+            }
+        }
+
 
     }
 
@@ -150,7 +159,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_peliculas) {
 
-            fragmento = new FragmentClasificaciones();
+            //fragmento = FragmentClasificaciones.newInstance();
             // Handle the camera action
         } else if (id == R.id.nav_usuarios) {
             fragmento= new GestionUsuariosFragment();

@@ -21,8 +21,8 @@ public class clsManejadorVentanas {
     public Cursor getNombreVentanas()
     {
         String query;
-        query=("select idVentana, nombre from tbVentanas");
-        return conexion.mConsultar(query);
+        query= "select idVentana, nombre from tbVentanas";
+        return conexion.mConsultar(query, null);
     }
 
 }

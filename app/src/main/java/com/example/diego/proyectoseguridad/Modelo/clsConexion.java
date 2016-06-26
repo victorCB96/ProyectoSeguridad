@@ -3,7 +3,9 @@ package com.example.diego.proyectoseguridad.Modelo;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
@@ -50,10 +52,10 @@ public class clsConexion extends SQLiteAssetHelper{
         }
     }//fin del mmetodo eliminar
 
-    public boolean mModificar(ContentValues valores,int id,String nombreTabla)
+    public boolean mModificar(ContentValues valores, int id, String nombreTabla)
     {
         try {
-            bd.update(nombreTabla,valores,"id"+"=?",new String[]{Integer.toString(id)});
+            bd.update(nombreTabla,valores,"id"+"=?", new String[]{Integer.toString(id)});
             bd.close();
 
             return true;
@@ -63,9 +65,9 @@ public class clsConexion extends SQLiteAssetHelper{
         }
     }//fin del metodo consultar
 
-    public Cursor mConsultar(String query)
+    public Cursor mConsultar(String query, String[] args)
     {
-        Cursor cursor=bd.rawQuery(query,null);
+        Cursor cursor = bd.rawQuery(query,args);
         return cursor;
     }
 
@@ -75,19 +77,6 @@ public class clsConexion extends SQLiteAssetHelper{
         return cursor;
     }
 
-    public Cursor consultarUsuario(String usuario,String clave){
 
-        Cursor cursor=bd.rawQuery("Select * from tbUsuarios where nombre= ? and contrasena= ?",new String[]{usuario,clave});
-
-        return cursor;
-    }
-
-    public Cursor getUsuarioEspecifico(String usuario){
-        //String query;
-        //query=String.format("Select * from tbUsuarios where nombre= ?",new String[]{usuario});
-        //
-
-        return bd.rawQuery("Select * from tbUsuarios where nombre= ?",new String[]{usuario});
-    }
 
 }
