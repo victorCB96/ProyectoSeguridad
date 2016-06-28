@@ -78,5 +78,16 @@ public class clsManejoUsuarios {
     }
 
 
+    public Cursor getPermisosDirectosUsuario(String idUsuario){
+        String query ="select v.codigoVentana, uv.ver,uv.modificar,uv.eliminar,uv.insertar\n" +
+                "from tbUsuarioVentana uv, tbVentanas v\n" +
+                "where uv.idUsuario=?\n" +
+                "and uv.idVentana=v.idVentana;";
+        Cursor cursor=conexion.mConsultarVariasTablas(query,idUsuario);
+
+        return cursor;
+    }
+
+
 
 }

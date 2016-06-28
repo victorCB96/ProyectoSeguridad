@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.example.diego.proyectoseguridad.Modelo.Variables;
 import com.example.diego.proyectoseguridad.Modelo.clsManejoUsuarios;
 import com.example.diego.proyectoseguridad.R;
 
@@ -48,7 +49,7 @@ public class GestionUsuariosFragment extends Fragment {
         btn_agregarUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(MainActivity.PERMISO_AGREGAR){
+                if(Variables.PERMISO_AGREGAR_USUARIOS){
                     iniciarRegistro();
                 }else {
                     Snackbar.make(getView(),"Usted no tiene permiso para agregar usuarios",Snackbar.LENGTH_LONG).show();

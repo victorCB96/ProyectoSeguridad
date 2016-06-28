@@ -19,7 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.diego.proyectoseguridad.Modelo.Usuario;
+import com.example.diego.proyectoseguridad.Modelo.Variables;
 import com.example.diego.proyectoseguridad.Modelo.clsManejoRoles;
+import com.example.diego.proyectoseguridad.Modelo.clsManejoUsuarios;
 import com.example.diego.proyectoseguridad.R;
 
 public class MainActivity extends AppCompatActivity
@@ -28,12 +30,10 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawer;
     private TextView usuarioCorreo;
     private int idUsuario; //este es el id de la consulta del login que sirve para obtener el rol en habilitarVentanas.
-    public static boolean PERMISO_EDITAR=false;
-    public static boolean PERMISO_ELIMINAR=false;
-    public static boolean PERMISO_AGREGAR=false;
 
-    private Cursor consulta;
-    private Usuario usuario;
+   private Usuario usuario;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,93 +63,159 @@ public class MainActivity extends AppCompatActivity
             if (view != null) {
                 usuarioCorreo=(TextView) view.findViewById(R.id.usuarioCorreo);
                 usuarioCorreo.setText(usuario.getNombre());
-                this.habilitarVentanas(view,String.valueOf(usuario.getIdUsuario()));
+                this.habilitarVentanasRoles(view,String.valueOf(usuario.getIdUsuario()));
+                this.habilitarVentanasPermisos(view,String.valueOf(usuario.getIdUsuario()));
             }
         }
 
 
     }
 
-    private void habilitarVentanasPermisos(){
+    private void habilitarVentanasPermisos(View view,String idUsuario){
+        clsManejoUsuarios usuarios = new clsManejoUsuarios(view.getContext());
+        Cursor consulta= usuarios.getPermisosDirectosUsuario(idUsuario);
 
-    }
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        MenuItem item_usuario = navigationView.getMenu().getItem(1);
+        MenuItem item_seguridad = navigationView.getMenu().getItem(2);
+        MenuItem item_peliculas = navigationView.getMenu().getItem(0);
 
-    public void habilitarVentanas(View view,String idUsuario){
+        try {
+            item_usuario.setEnabled(false);
+            item_seguridad.setEnabled(false);
+            item_peliculas.setEnabled(false);
+            for(consulta.moveToFirst(); !consulta.isAfterLast(); consulta.moveToNext()){
+                if(consulta.getInt(0)== R.id.nav_usuarios){//consulta si tiene acceso a la ventana usuarios
+                    if(consulta.getInt(1)==1){
+                        item_usuario.setEnabled(true);
+                    }
+
+                    if (consulta.getInt(2)==1){//si tiene permiso de modificar
+                        item_usuario.setEnabled(true);
+                        Variables.PERMISO_EDITAR_USUARIOS=true;
+                    }
+
+                    if (consulta.getInt(3)==1){//si tiene permiso de eliminar
+                        item_usuario.setEnabled(true);
+                        Variables.PERMISO_ELIMINAR_USUARIOS=true;
+                    }
+                    if (consulta.getInt(4)==1){//si tiene permiso de insertar
+                        item_usuario.setEnabled(true);
+                        Variables.PERMISO_AGREGAR_USUARIOS=true;
+                    }
+
+                }else if(consulta.getInt(0)== R.id.nav_roles){//consulta si tiene acceso a la ventana roles
+                    if(consulta.getInt(1)==1){
+                        item_seguridad.setEnabled(true);
+                    }
+
+                    if (consulta.getInt(2)==1){//si tiene permiso de modificar
+                        item_seguridad.setEnabled(true);
+                        Variables.PERMISO_EDITAR_ROLES=true;
+                    }
+
+                    if (consulta.getInt(3)==1){//si tiene permiso de eliminar
+                        item_seguridad.setEnabled(true);
+                        Variables.PERMISO_ELIMINAR_ROLES=true;
+                    }
+
+                    if (consulta.getInt(4)==1){//si tiene permiso de insertar
+                        item_seguridad.setEnabled(true);
+                        Variables.PERMISO_AGREGAR_ROLES=true;
+                    }
+
+
+                }else if(consulta.getInt(0)== R.id.nav_peliculas){//consulta si tiene acceso a la ventana peliculas
+                    //item2.setEnabled(true);
+                    if(consulta.getInt(1)==1){
+                        item_peliculas.setEnabled(true);
+                    }
+                }//fin del if
+            }//fin del for que recorre los privilegios del usuario
+        }catch (CursorIndexOutOfBoundsException err){
+            Toast.makeText(this,"Ocurrió un error fatal"+err,
+                    Toast.LENGTH_SHORT).show();
+        }//Fin del try catch
+    }//fin del metodo
+
+
+
+    public void habilitarVentanasRoles(View view,String idUsuario){
         clsManejoRoles roles = new clsManejoRoles(view.getContext());
         String idRol="";
         Cursor consulta=null;
         Cursor consultaUsuarioRoles= roles.getRoles(idUsuario);
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        MenuItem item = navigationView.getMenu().getItem(1);
-        MenuItem item2 = navigationView.getMenu().getItem(2);
+        MenuItem item_usuario = navigationView.getMenu().getItem(1);
+        MenuItem item_seguridad = navigationView.getMenu().getItem(2);
+        MenuItem item_peliculas = navigationView.getMenu().getItem(0);
 
 
 
         try {
-            item.setEnabled(false);
-            item2.setEnabled(false);
+            item_usuario.setEnabled(false);
+            item_seguridad.setEnabled(false);
+            item_peliculas.setEnabled(false);
+
             for(consultaUsuarioRoles.moveToFirst(); !consultaUsuarioRoles.isAfterLast(); consultaUsuarioRoles.moveToNext()){
                 idRol=String.valueOf(consultaUsuarioRoles.getInt(0));
                 consulta= roles.consultarRoles(idRol);
                 try{
                     for(consulta.moveToFirst(); !consulta.isAfterLast(); consulta.moveToNext()){
 
-                            if(consulta.getString(0).equalsIgnoreCase("Gestion Usuarios")){
+                            if(consulta.getInt(0)== R.id.nav_usuarios){//consulta si tiene acceso a la ventana usuarios
                                 if(consulta.getInt(1)==1){
-                                    item.setEnabled(true);
-
-                                }else if (consulta.getInt(2)==1){//si tiene permiso de modificar
-
-                                }else if (consulta.getInt(3)==1){//si tiene permiso de eliminar
-
-                                }else if (consulta.getInt(4)==1){//si tiene permiso de insertar
-                                    this.PERMISO_AGREGAR=true;
+                                    item_usuario.setEnabled(true);
                                 }
 
-                            }else if(consulta.getString(0).equalsIgnoreCase("Gestion Roles")){
+                                if (consulta.getInt(2)==1){//si tiene permiso de modificar
+                                    item_usuario.setEnabled(true);
+                                    Variables.PERMISO_EDITAR_USUARIOS=true;
+                                }
+
+                                if (consulta.getInt(3)==1){//si tiene permiso de eliminar
+                                    item_usuario.setEnabled(true);
+                                    Variables.PERMISO_ELIMINAR_USUARIOS=true;
+                                }
+                                if (consulta.getInt(4)==1){//si tiene permiso de insertar
+                                    item_usuario.setEnabled(true);
+                                    Variables.PERMISO_AGREGAR_USUARIOS=true;
+                                }
+
+                            }else if(consulta.getInt(0)== R.id.nav_roles){//consulta si tiene acceso a la ventana roles
+                                if(consulta.getInt(1)==1){
+                                    item_seguridad.setEnabled(true);
+                                }
+
+                                if (consulta.getInt(2)==1){//si tiene permiso de modificar
+                                    item_seguridad.setEnabled(true);
+                                    Variables.PERMISO_EDITAR_ROLES=true;
+                                }
+
+                                if (consulta.getInt(3)==1){//si tiene permiso de eliminar
+                                    item_seguridad.setEnabled(true);
+                                    Variables.PERMISO_ELIMINAR_ROLES=true;
+                                }
+
+                                if (consulta.getInt(4)==1){//si tiene permiso de insertar
+                                    item_seguridad.setEnabled(true);
+                                    Variables.PERMISO_AGREGAR_ROLES=true;
+                                }
+
+
+                            }else if(consulta.getInt(0)== R.id.nav_peliculas){//consulta si tiene acceso a la ventana peliculas
                                 //item2.setEnabled(true);
                                 if(consulta.getInt(1)==1){
-                                    item.setEnabled(true);
-
-                                }else if (consulta.getInt(2)==1){//si tiene permiso de modificar
-
-                                }else if (consulta.getInt(3)==1){//si tiene permiso de eliminar
-
-                                }else if (consulta.getInt(4)==1){//si tiene permiso de insertar
-                                    this.PERMISO_AGREGAR=true;
+                                    item_peliculas.setEnabled(true);
                                 }
-                            }
+                            }//fin del if
                     }//fin del for que recorre los permisos de los roles
                 }catch (CursorIndexOutOfBoundsException err){
                     Toast.makeText(this,"Ocurrió un error fatal"+err,
                             Toast.LENGTH_SHORT).show();
                 }//Fin del try catch
             }//fin del for que recorre los roles que tiene un usuario
-
-
-
-
-
-
-
-
-           /* if (consulta!=null){
-                // metodo que habilita las ventanas correpondientes
-                if(usuario==1) {
-                    //MenuView.ItemView item = (MenuView.ItemView) view.findViewById(R.id.nav_prueba);
-                    //item.setEnabled(true);
-                    Toast.makeText(this,"entro admin",
-                            Toast.LENGTH_SHORT).show();
-                }else{
-
-                    item.setEnabled(false);
-                    item2.setEnabled(false);
-                }
-
-            }else {
-                Toast.makeText(this,"Ocurrió un error fatal, Cursor vacio!",
-                        Toast.LENGTH_SHORT).show();
-            }*/
         }catch (CursorIndexOutOfBoundsException err){
             Toast.makeText(this,"Ocurrió un error fatal"+err,
                     Toast.LENGTH_SHORT).show();

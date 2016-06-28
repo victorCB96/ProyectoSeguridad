@@ -1,10 +1,8 @@
 package com.example.diego.proyectoseguridad.Vista;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,8 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.example.diego.proyectoseguridad.Modelo.Variables;
 import com.example.diego.proyectoseguridad.Modelo.clsManejoRoles;
-import com.example.diego.proyectoseguridad.Modelo.clsManejoUsuarios;
 import com.example.diego.proyectoseguridad.R;
 
 
@@ -53,7 +51,12 @@ public class GestionSeguridadFragment extends Fragment {
        btn_agregarRol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                iniciarRegistro();
+                if(Variables.PERMISO_AGREGAR_ROLES){
+                    iniciarRegistro();
+                }else {
+                    Snackbar.make(getView(),"Usted no tiene permiso para agregar roles",Snackbar.LENGTH_LONG).show();
+                }
+
             }
         });
 
