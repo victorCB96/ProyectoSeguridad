@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.diego.proyectoseguridad.Modelo.Usuario;
 import com.example.diego.proyectoseguridad.R;
 import com.example.diego.proyectoseguridad.Modelo.clsManejadorVentanas;
 
@@ -21,12 +22,21 @@ import com.example.diego.proyectoseguridad.Modelo.clsManejadorVentanas;
  */
 public class FragmentClasificaciones extends Fragment {
 
+    private static final String USUARIO = "USUARIO";
     private AppBarLayout appBarLayout;
     private TabLayout pestañas;
     private ViewPager viewPager;
 
     public FragmentClasificaciones() {
         // Required empty public constructor
+    }
+
+    public static FragmentClasificaciones newInstance(Usuario usuario){
+        FragmentClasificaciones fragment = new FragmentClasificaciones();
+        Bundle args = new Bundle();
+        args.putParcelable(USUARIO, usuario);
+        fragment.setArguments(args);
+        return fragment;
     }
 
 

@@ -44,7 +44,7 @@ public class clsManejoRoles {
         String query;
         query=String.format("SELECT * FROM %s",TABLA_ROLES);
 
-        return conexion.mConsultar(query);
+        return conexion.mConsultar(query, null);
     }
 
     /*public Cursor consultarRoles(String idUsuario){

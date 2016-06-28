@@ -34,4 +34,6 @@ public class Ventana {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+
 }

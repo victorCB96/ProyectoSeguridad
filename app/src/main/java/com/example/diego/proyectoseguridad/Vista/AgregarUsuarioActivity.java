@@ -70,8 +70,7 @@ public class AgregarUsuarioActivity extends AppCompatActivity implements Validat
     @Override
     public void onValidationSucceeded() {
         clsManejoUsuarios manejoUsuarios = new clsManejoUsuarios(this);
-        clsConexion conexion= new clsConexion(getApplicationContext());
-        Cursor consulta= conexion.getUsuarioEspecifico( etUsername.getText().toString().trim());
+        Cursor consulta= manejoUsuarios.getUsuarioEspecifico( etUsername.getText().toString().trim());
         if (consulta.getCount()==0){
             if(manejoUsuarios.mAgregarUsuario(new Usuario( etUsername.getText().toString().trim(), etPassword.getText().toString().trim() ))) {
                 setResult(RESULT_OK);

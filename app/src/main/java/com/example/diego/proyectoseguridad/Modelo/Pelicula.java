@@ -3,18 +3,21 @@ package com.example.diego.proyectoseguridad.Modelo;
 import android.database.Cursor;
 
 import android.database.Cursor;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.ArrayList;
 
 /**
  * Created by chris on 09/06/16.
  */
-public class Pelicula {
+public class Pelicula implements Parcelable {
 
     public static final int CLASIFICACION_ADULTOS = 1;
     public static final int CLASIFICACION_MAYOR_A_12 = 2;
     public static final int CLASIFICACION_TODO_PUBLICO = 3;
     public static final int CLASIFICACION_SUPERVISION_ADULTO = 4;
+
 
     private String nombre;
     private String sinopsis;
@@ -22,6 +25,7 @@ public class Pelicula {
     private int idPelicula;
     private int clasificacion;
     private Cursor generos;
+    private String sGeneros;
 
     public Pelicula(String nombre, String sinopsis, String urlImagen, int idPelicula, int clasificacion, Cursor generos) {
         this.nombre = nombre;
@@ -94,6 +98,10 @@ public class Pelicula {
         this.generos = generos;
     }
 
+    public String getsGeneros() {
+        return sGeneros;
+    }
+
     public String getGeneros() {
         generos.moveToFirst();
         String sGeneros = generos.getString(0);
@@ -105,4 +113,40 @@ public class Pelicula {
         return sGeneros;
     }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.nombre);
+        dest.writeString(this.sinopsis);
+        dest.writeString(this.urlImagen);
+        dest.writeInt(this.idPelicula);
+        dest.writeInt(this.clasificacion);
+        dest.writeString(getGeneros());
+    }
+
+    protected Pelicula(Parcel in) {
+        this.nombre = in.readString();
+        this.sinopsis = in.readString();
+        this.urlImagen = in.readString();
+        this.idPelicula = in.readInt();
+        this.clasificacion = in.readInt();
+        this.sGeneros = in.readString();
+    }
+
+    public static final Parcelable.Creator<Pelicula> CREATOR = new Parcelable.Creator<Pelicula>() {
+        @Override
+        public Pelicula createFromParcel(Parcel source) {
+            return new Pelicula(source);
+        }
+
+        @Override
+        public Pelicula[] newArray(int size) {
+            return new Pelicula[size];
+        }
+    };
 }

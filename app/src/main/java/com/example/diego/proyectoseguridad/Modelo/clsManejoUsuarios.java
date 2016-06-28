@@ -3,6 +3,7 @@ package com.example.diego.proyectoseguridad.Modelo;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 /**
  * Created by victor on 09/06/2016.
@@ -44,9 +45,36 @@ public class clsManejoUsuarios {
     public Cursor getUsuario()
     {
         String query;
-        query=String.format("SELECT * FROM %s",TABLA_USUARIOS);
+        query=String.format("SELECT * FROM %s", TABLA_USUARIOS);
 
-        return conexion.mConsultar(query);
+        return conexion.mConsultar(query,null);
+    }
+
+    public Usuario consultarUsuario(String clave, String usuario){
+        String query = "Select * from tbUsuarios where nombre= ? and contrasena= ?";
+        String [] args = {usuario, clave};
+        Cursor cursor = conexion.mConsultar(query, args);
+
+        if( cursor.getCount() > 0){
+            cursor.moveToFirst();
+            Usuario usuarioEncontrado = new Usuario(cursor.getString(1), cursor.getString(2), cursor.getInt(0));
+            cursor.close();
+            return usuarioEncontrado;
+        }else{
+            cursor.close();
+            return null;
+        }
+    }
+
+
+
+    public Cursor getUsuarioEspecifico(String usuario){
+        //String query;
+        //query=String.format("Select * from tbUsuarios where nombre= ?",new String[]{usuario});
+        //
+        String query = "Select * from tbUsuarios where nombre= ?";
+        String [] args = {usuario};
+        return conexion.mConsultar(query, args);
     }
 
 

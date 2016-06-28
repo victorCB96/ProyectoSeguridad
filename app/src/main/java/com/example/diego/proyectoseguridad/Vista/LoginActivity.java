@@ -1,7 +1,6 @@
 package com.example.diego.proyectoseguridad.Vista;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -13,7 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.diego.proyectoseguridad.Modelo.Usuario;
 import com.example.diego.proyectoseguridad.Modelo.clsConexion;
+import com.example.diego.proyectoseguridad.Modelo.clsManejoUsuarios;
 import com.example.diego.proyectoseguridad.R;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
@@ -27,6 +28,7 @@ import java.util.List;
 public class LoginActivity extends AppCompatActivity implements Validator.ValidationListener{
 
 
+    public static final String USUARIO = "usuario";
     // UI references.
     @NotEmpty(message = "No puede dejar este campo vacío")
     private AutoCompleteTextView email;
@@ -35,17 +37,16 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
     private EditText password;
 
     private Button login;
-    private clsConexion conexion;
-    private Cursor consulta;
-    private String usuario;
-    private int idUsuario;
+    private clsManejoUsuarios conexion;
     private Validator validator;
     private View view;
+    private Usuario usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        conexion = new clsManejoUsuarios(this);
 
         //Inicializacion de los elementos del xml
         email=(AutoCompleteTextView)findViewById(R.id.email);
@@ -64,33 +65,8 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
             }
         });
 
-
     }
 
-    //metodo que verifica la existencia del usuario
-    public boolean autenticar(){
-        usuario=email.getText().toString();
-        String clave=password.getText().toString();
-        boolean estado=false;
-        conexion= new clsConexion(this);
-        consulta=conexion.consultarUsuario(usuario,clave);
-
-        try {
-            for(consulta.moveToFirst(); !consulta.isAfterLast(); consulta.moveToNext()){
-                idUsuario=consulta.getInt(0);
-            }//fin del for
-
-            if(consulta.getCount()!=0){
-                estado= true;
-            }//fin del if
-        }catch (CursorIndexOutOfBoundsException err){
-            Toast.makeText(this,"Ocurrió un error fatal",
-                    Toast.LENGTH_SHORT).show();
-        }//Fin del try catch
-
-        return estado;
-
-    }//fin del metodo autenticar
 
 
     @Override
@@ -100,23 +76,12 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        AutoCompleteTextView email=null;
-        EditText password=null;
-        Button login=null;
-        clsConexion conexion=null;
-        Cursor consulta=null;
-        String usuario="";
-    }
-
-    @Override
     public void onValidationSucceeded() {
+        usuario = conexion.consultarUsuario(password.getText().toString().trim(), email.getText().toString().trim());
 
-        if(autenticar()){
-            Intent mainIntent = new Intent(view.getContext(), MainActivity.class);
-            mainIntent.putExtra("correo",usuario);
-            mainIntent.putExtra("idUsuario",idUsuario);
+        if(usuario != null){
+            Intent mainIntent = new Intent(this, MainActivity.class);
+            mainIntent.putExtra(USUARIO, usuario );
             startActivity(mainIntent);
         }else{
             Snackbar.make(view,"No existe el usuario", Snackbar.LENGTH_LONG).show();
