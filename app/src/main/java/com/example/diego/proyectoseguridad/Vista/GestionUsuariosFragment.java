@@ -48,7 +48,12 @@ public class GestionUsuariosFragment extends Fragment {
         btn_agregarUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                iniciarRegistro();
+                if(MainActivity.PERMISO_AGREGAR){
+                    iniciarRegistro();
+                }else {
+                    Snackbar.make(getView(),"Usted no tiene permiso para agregar usuarios",Snackbar.LENGTH_LONG).show();
+                }
+
             }
         });
 

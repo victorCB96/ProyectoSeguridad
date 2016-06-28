@@ -4,18 +4,16 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.view.menu.MenuView;
-import android.view.MenuInflater;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +26,10 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawer;
     private TextView usuarioCorreo;
     private int idUsuario; //este es el id de la consulta del login que sirve para obtener el rol en habilitarVentanas.
-    private Cursor consulta;
+    public static boolean PERMISO_EDITAR=false;
+    public static boolean PERMISO_ELIMINAR=false;
+    public static boolean PERMISO_AGREGAR=false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,22 +59,70 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    private void habilitarVentanasPermisos(){
+
+    }
+
     public void habilitarVentanas(View view,String idUsuario){
         clsManejoRoles roles = new clsManejoRoles(view.getContext());
-        int idRol=0,idVentana=0,usuario=0;
-        consulta= roles.consultarRoles(idUsuario);
+        String idRol="";
+        Cursor consulta=null;
+        Cursor consultaUsuarioRoles= roles.getRoles(idUsuario);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         MenuItem item = navigationView.getMenu().getItem(1);
         MenuItem item2 = navigationView.getMenu().getItem(2);
 
 
+
         try {
-            for(consulta.moveToFirst(); !consulta.isAfterLast(); consulta.moveToNext()){
-                usuario=consulta.getInt(0);
-                idRol=consulta.getInt(1);
-                idVentana=consulta.getInt(2);
-            }
-            if (consulta!=null){
+            item.setEnabled(false);
+            item2.setEnabled(false);
+            for(consultaUsuarioRoles.moveToFirst(); !consultaUsuarioRoles.isAfterLast(); consultaUsuarioRoles.moveToNext()){
+                idRol=String.valueOf(consultaUsuarioRoles.getInt(0));
+                consulta= roles.consultarRoles(idRol);
+                try{
+                    for(consulta.moveToFirst(); !consulta.isAfterLast(); consulta.moveToNext()){
+
+                            if(consulta.getString(0).equalsIgnoreCase("Gestion Usuarios")){
+                                if(consulta.getInt(1)==1){
+                                    item.setEnabled(true);
+
+                                }else if (consulta.getInt(2)==1){//si tiene permiso de modificar
+
+                                }else if (consulta.getInt(3)==1){//si tiene permiso de eliminar
+
+                                }else if (consulta.getInt(4)==1){//si tiene permiso de insertar
+                                    this.PERMISO_AGREGAR=true;
+                                }
+
+                            }else if(consulta.getString(0).equalsIgnoreCase("Gestion Roles")){
+                                //item2.setEnabled(true);
+                                if(consulta.getInt(1)==1){
+                                    item.setEnabled(true);
+
+                                }else if (consulta.getInt(2)==1){//si tiene permiso de modificar
+
+                                }else if (consulta.getInt(3)==1){//si tiene permiso de eliminar
+
+                                }else if (consulta.getInt(4)==1){//si tiene permiso de insertar
+                                    this.PERMISO_AGREGAR=true;
+                                }
+                            }
+                    }//fin del for que recorre los permisos de los roles
+                }catch (CursorIndexOutOfBoundsException err){
+                    Toast.makeText(this,"Ocurrió un error fatal"+err,
+                            Toast.LENGTH_SHORT).show();
+                }//Fin del try catch
+            }//fin del for que recorre los roles que tiene un usuario
+
+
+
+
+
+
+
+
+           /* if (consulta!=null){
                 // metodo que habilita las ventanas correpondientes
                 if(usuario==1) {
                     //MenuView.ItemView item = (MenuView.ItemView) view.findViewById(R.id.nav_prueba);
@@ -89,11 +138,12 @@ public class MainActivity extends AppCompatActivity
             }else {
                 Toast.makeText(this,"Ocurrió un error fatal, Cursor vacio!",
                         Toast.LENGTH_SHORT).show();
-            }
+            }*/
         }catch (CursorIndexOutOfBoundsException err){
             Toast.makeText(this,"Ocurrió un error fatal"+err,
                     Toast.LENGTH_SHORT).show();
         }//Fin del try catch
+
 
     }
 
@@ -173,15 +223,6 @@ public class MainActivity extends AppCompatActivity
             itemDrawer.setChecked(true);
             getSupportActionBar().setTitle(itemDrawer.getTitle());
         }
-    }
+    }//fin del metodo seleccionarItem
 
-    /*@Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode){
-            case KeyEvent.KEYCODE_BACK:
-                return true;
-        }
-
-        return super.onKeyDown(keyCode, event);
-    }*/
 }

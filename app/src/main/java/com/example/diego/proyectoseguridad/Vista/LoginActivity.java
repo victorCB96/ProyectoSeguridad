@@ -17,7 +17,6 @@ import com.example.diego.proyectoseguridad.Modelo.clsConexion;
 import com.example.diego.proyectoseguridad.R;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
-import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import java.util.List;
@@ -31,8 +30,10 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
     // UI references.
     @NotEmpty(message = "No puede dejar este campo vacío")
     private AutoCompleteTextView email;
+
     @NotEmpty(message = "Escriba una contraseña")
     private EditText password;
+
     private Button login;
     private clsConexion conexion;
     private Cursor consulta;
@@ -66,11 +67,10 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
     }
 
+    //metodo que verifica la existencia del usuario
     public boolean autenticar(){
         usuario=email.getText().toString();
         String clave=password.getText().toString();
-        String usuariodb="";
-        String clavedb="";
         boolean estado=false;
         conexion= new clsConexion(this);
         consulta=conexion.consultarUsuario(usuario,clave);
@@ -78,12 +78,11 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         try {
             for(consulta.moveToFirst(); !consulta.isAfterLast(); consulta.moveToNext()){
                 idUsuario=consulta.getInt(0);
-                usuariodb=consulta.getString(1);
-                clavedb=consulta.getString(2);
-            }
+            }//fin del for
+
             if(consulta.getCount()!=0){
                 estado= true;
-            }
+            }//fin del if
         }catch (CursorIndexOutOfBoundsException err){
             Toast.makeText(this,"Ocurrió un error fatal",
                     Toast.LENGTH_SHORT).show();
@@ -125,6 +124,8 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
     }
 
+    //metodo que devuelve los errores en caso de que no se cumplan los requerimientos
+    //establecido en los edit text
     @Override
     public void onValidationFailed(List<ValidationError> errors) {
         for(ValidationError error : errors){
@@ -136,6 +137,6 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
             }
         }
 
-    }
+    }//fin del metodo onValidationFailed
 }
 
