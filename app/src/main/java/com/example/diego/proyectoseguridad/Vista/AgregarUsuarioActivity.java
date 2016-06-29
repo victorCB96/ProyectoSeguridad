@@ -1,17 +1,16 @@
 package com.example.diego.proyectoseguridad.Vista;
 
 import android.database.Cursor;
-import android.database.CursorIndexOutOfBoundsException;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.diego.proyectoseguridad.Modelo.Usuario;
-import com.example.diego.proyectoseguridad.Modelo.clsConexion;
 import com.example.diego.proyectoseguridad.Modelo.clsManejoUsuarios;
 import com.example.diego.proyectoseguridad.R;
 import com.mobsandgeeks.saripaar.ValidationError;
@@ -38,6 +37,8 @@ public class AgregarUsuarioActivity extends AppCompatActivity implements Validat
 
     private Button btnRegistro;
 
+    private TextView tvPermisos,tvRolesUsuario;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,11 +56,22 @@ public class AgregarUsuarioActivity extends AppCompatActivity implements Validat
         etPassword= (EditText) findViewById(R.id.etPassword);
         etConfirmPassword= (EditText) findViewById(R.id.etConfirmPassword);
         btnRegistro= (Button) findViewById(R.id.btnRegistrar);
+        tvPermisos= (TextView) findViewById(R.id.tvPermisos);
+        tvRolesUsuario= (TextView) findViewById(R.id.tvRolesUsuario);
 
         btnRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 validator.validate();
+            }
+        });
+
+        tvRolesUsuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = getSupportFragmentManager();
+                AsignacionRolesUsuariosFragment alertDialog = new AsignacionRolesUsuariosFragment();
+                alertDialog.show(fm, "fragment_alert");
             }
         });
 

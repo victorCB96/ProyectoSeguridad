@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity
             if (view != null) {
                 usuarioCorreo=(TextView) view.findViewById(R.id.usuarioCorreo);
                 usuarioCorreo.setText(usuario.getNombre());
-                this.habilitarVentanasRoles(view,String.valueOf(usuario.getIdUsuario()));
+                //this.habilitarVentanasRoles(view,String.valueOf(usuario.getIdUsuario()));
                 this.habilitarVentanasPermisos(view,String.valueOf(usuario.getIdUsuario()));
             }
         }
@@ -84,8 +84,13 @@ public class MainActivity extends AppCompatActivity
             item_usuario.setEnabled(false);
             item_seguridad.setEnabled(false);
             item_peliculas.setEnabled(false);
+
+
             for(consulta.moveToFirst(); !consulta.isAfterLast(); consulta.moveToNext()){
-                if(consulta.getInt(0)== R.id.nav_usuarios){//consulta si tiene acceso a la ventana usuarios
+
+                if(consulta.getString(0).toString().trim().equals( item_usuario.getTitle().toString().trim())){//consulta si tiene acceso a la ventana usuarios
+                    Log.i("consulta= ","entro");
+                    Log.i("consulta= ","permiso= "+consulta.getInt(1));
                     if(consulta.getInt(1)==1){
                         item_usuario.setEnabled(true);
                     }
@@ -104,7 +109,7 @@ public class MainActivity extends AppCompatActivity
                         Variables.PERMISO_AGREGAR_USUARIOS=true;
                     }
 
-                }else if(consulta.getInt(0)== R.id.nav_roles){//consulta si tiene acceso a la ventana roles
+                }else if(consulta.getString(0).toString().trim().equals( item_seguridad.getTitle().toString().trim())){//consulta si tiene acceso a la ventana roles
                     if(consulta.getInt(1)==1){
                         item_seguridad.setEnabled(true);
                     }
@@ -125,7 +130,7 @@ public class MainActivity extends AppCompatActivity
                     }
 
 
-                }else if(consulta.getInt(0)== R.id.nav_peliculas){//consulta si tiene acceso a la ventana peliculas
+                }else if(consulta.getString(0).toString().trim().equals( item_peliculas.getTitle().toString().trim())){//consulta si tiene acceso a la ventana peliculas
                     //item2.setEnabled(true);
                     if(consulta.getInt(1)==1){
                         item_peliculas.setEnabled(true);
@@ -164,7 +169,7 @@ public class MainActivity extends AppCompatActivity
                 try{
                     for(consulta.moveToFirst(); !consulta.isAfterLast(); consulta.moveToNext()){
 
-                            if(consulta.getInt(0)== R.id.nav_usuarios){//consulta si tiene acceso a la ventana usuarios
+                            if(consulta.getString(0).toString().trim().equals( item_usuario.getTitle().toString().trim())){//consulta si tiene acceso a la ventana usuarios
                                 if(consulta.getInt(1)==1){
                                     item_usuario.setEnabled(true);
                                 }
@@ -183,7 +188,7 @@ public class MainActivity extends AppCompatActivity
                                     Variables.PERMISO_AGREGAR_USUARIOS=true;
                                 }
 
-                            }else if(consulta.getInt(0)== R.id.nav_roles){//consulta si tiene acceso a la ventana roles
+                            }else if(consulta.getString(0).toString().trim().equals( item_seguridad.getTitle().toString().trim())){//consulta si tiene acceso a la ventana roles
                                 if(consulta.getInt(1)==1){
                                     item_seguridad.setEnabled(true);
                                 }
@@ -204,7 +209,7 @@ public class MainActivity extends AppCompatActivity
                                 }
 
 
-                            }else if(consulta.getInt(0)== R.id.nav_peliculas){//consulta si tiene acceso a la ventana peliculas
+                            }else if(consulta.getString(0).toString().trim().equals( item_peliculas.getTitle().toString().trim())){//consulta si tiene acceso a la ventana peliculas
                                 //item2.setEnabled(true);
                                 if(consulta.getInt(1)==1){
                                     item_peliculas.setEnabled(true);
