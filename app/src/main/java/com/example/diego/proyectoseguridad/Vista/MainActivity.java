@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(this);
             View view = navigationView.getHeaderView(0);
+            seleccionarItem(navigationView.getMenu().getItem(0));
 
             if (view != null) {
                 usuarioCorreo=(TextView) view.findViewById(R.id.usuarioCorreo);
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-        seleccionarItem(navigationView.getMenu().getItem(0));
+
 
 
     }
@@ -86,7 +87,6 @@ public class MainActivity extends AppCompatActivity
     private  void setClasificacionesUsuario(){
         clsManejoClasificaciones manejoClasificaciones = new clsManejoClasificaciones(this);
         clasificacionesUsuario = (ArrayList<Clasificacion>) manejoClasificaciones.getClasificacionesUsuarios(usuarioRoles);
-
     }
 
     private void habilitarVentanasPermisos(NavigationView view){
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity
 
             for(consulta.moveToFirst(); !consulta.isAfterLast(); consulta.moveToNext()){
 
-                if(consulta.getString(0).toString().trim().equals( item_usuario.getTitle().toString().trim())){//consulta si tiene acceso a la ventana usuarios
+                if(consulta.getString(0).trim().equals( item_usuario.getTitle().toString().trim())){//consulta si tiene acceso a la ventana usuarios
                     if(consulta.getInt(1)==1){
                         item_usuario.setEnabled(true);
                     }
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity
                         Variables.PERMISO_AGREGAR_USUARIOS=true;
                     }
 
-                }else if(consulta.getString(0).toString().trim().equals( item_seguridad.getTitle().toString().trim())){//consulta si tiene acceso a la ventana roles
+                }else if(consulta.getString(0).trim().equals( item_seguridad.getTitle().toString().trim())){//consulta si tiene acceso a la ventana roles
                     if(consulta.getInt(1)==1){
                         item_seguridad.setEnabled(true);
                     }
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity
                     }
 
 
-                }else if(consulta.getString(0).toString().trim().equals( item_peliculas.getTitle().toString().trim())){//consulta si tiene acceso a la ventana peliculas
+                }else if(consulta.getString(0).trim().equals( item_peliculas.getTitle().toString().trim())){//consulta si tiene acceso a la ventana peliculas
                     //item2.setEnabled(true);
                     if(consulta.getInt(1)==1){
                         item_peliculas.setEnabled(true);
@@ -176,12 +176,12 @@ public class MainActivity extends AppCompatActivity
             item_peliculas.setEnabled(false);
 
             for(usuarioRoles.moveToFirst(); !usuarioRoles.isAfterLast(); usuarioRoles.moveToNext()){
-                idRol=String.valueOf(usuarioRoles.getInt(0));
+                idRol = String.valueOf(usuarioRoles.getInt(0));
                 consulta= roles.consultarRoles(idRol);
                 try{
                     for(consulta.moveToFirst(); !consulta.isAfterLast(); consulta.moveToNext()){
 
-                            if(consulta.getString(0).toString().trim().equals( item_usuario.getTitle().toString().trim())){//consulta si tiene acceso a la ventana usuarios
+                            if(consulta.getString(0).trim().equals( item_usuario.getTitle().toString().trim())){//consulta si tiene acceso a la ventana usuarios
                                 if(consulta.getInt(1)==1){
                                     item_usuario.setEnabled(true);
                                 }
@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity
                                     Variables.PERMISO_AGREGAR_USUARIOS=true;
                                 }
 
-                            }else if(consulta.getString(0).toString().trim().equals( item_seguridad.getTitle().toString().trim())){//consulta si tiene acceso a la ventana roles
+                            }else if(consulta.getString(0).trim().equals( item_seguridad.getTitle().toString().trim())){//consulta si tiene acceso a la ventana roles
                                 if(consulta.getInt(1)==1){
                                     item_seguridad.setEnabled(true);
                                 }
@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity
                                 }
 
 
-                            }else if(consulta.getString(0).toString().trim().equals( item_peliculas.getTitle().toString().trim())){//consulta si tiene acceso a la ventana peliculas
+                            }else if(consulta.getString(0).trim().equals( item_peliculas.getTitle().toString().trim())){//consulta si tiene acceso a la ventana peliculas
                                 //item2.setEnabled(true);
                                 if(consulta.getInt(1)==1){
                                     item_peliculas.setEnabled(true);
