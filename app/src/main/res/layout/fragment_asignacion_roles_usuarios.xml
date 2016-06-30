@@ -1,0 +1,26 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Vista.AsignacionRolesUsuariosFragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="396dp"
+        android:id="@+id/rvRolesUsuario">
+    </android.support.v7.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/btnCerrarDialogo"
+        style="?android:textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Cerrar"
+        android:textColor="@color/secondary_text"
+        android:textStyle="bold"
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_gravity="center_horizontal|bottom" />
+
+</FrameLayout>

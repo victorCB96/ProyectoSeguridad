@@ -67,7 +67,7 @@ public class clsManejoRoles {
     }
 
     public Cursor consultarRoles(String idRol){
-        String query="SELECT v.codigoVentana,rv.ver,rv.modificar,rv.eliminar,rv.insertar\n" +
+        String query="SELECT v.nombre,rv.ver,rv.modificar,rv.eliminar,rv.insertar\n" +
                 "FROM tbRolVentana rv, tbVentanas v\n" +
                 "WHERE rv.idRol= ? \n" +
                 "AND rv.idVentana=v.idVentana;";
@@ -78,12 +78,12 @@ public class clsManejoRoles {
 
 
 
-    /*public Cursor consultarRoles(){
-        String query="select idRol from tbRolUsuario where nombre=? ";
-        Cursor cursor=conexion.mConsultarVariasTablas(query,idUsuario);
+    public Cursor consultarRolPorNombre(String nombre){
+        String query="select idRol from tbRoles where nombre=? ";
+        Cursor cursor=conexion.mConsultarVariasTablas(query,nombre);
 
         return cursor;
     }
-    */
+
 
 }
