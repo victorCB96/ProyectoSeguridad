@@ -3,17 +3,20 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:contentPadding="5dp"
-    app:cardElevation="4dp">
+    app:cardElevation="4dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginStart="6dp"
+    android:layout_marginEnd="6dp"
+    >
     
     <RelativeLayout
-        android:layout_width="150dp"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:src="@drawable/wow"
             android:id="@+id/img_view_pelicula"
             android:cropToPadding="true"
             android:drawingCacheQuality="high"
@@ -22,8 +25,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="1dp"
-            android:background="@color/divider"
+            android:background="@color/accent"
             android:layout_below="@+id/img_view_pelicula"/>
 
         <TextView
@@ -41,15 +43,16 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="32dp"
             android:id="@+id/text_view_genero"
             android:layout_centerVertical="true"
-            android:text="Comedia, Infantil, Accion"
+            android:text="Comedia, Infantil, Accion, ciencia ficcion"
             android:gravity="center_horizontal|center_vertical"
-            android:padding="3dp"
+            android:padding="2dp"
             android:textColor="@color/secondary_text"
             android:layout_below="@+id/img_view_pelicula"
-            android:textSize="12sp"
+            android:textSize="10sp"
+            android:maxLines="2"
             />
         
     </RelativeLayout>

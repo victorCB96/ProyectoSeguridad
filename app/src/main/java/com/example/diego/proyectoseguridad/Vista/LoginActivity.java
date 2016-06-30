@@ -1,7 +1,6 @@
 package com.example.diego.proyectoseguridad.Vista;
 
 import android.content.Intent;
-import android.database.CursorIndexOutOfBoundsException;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,10 +9,8 @@ import android.view.View.OnClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.diego.proyectoseguridad.Modelo.Usuario;
-import com.example.diego.proyectoseguridad.Modelo.clsConexion;
 import com.example.diego.proyectoseguridad.Modelo.clsManejoUsuarios;
 import com.example.diego.proyectoseguridad.R;
 import com.mobsandgeeks.saripaar.ValidationError;
@@ -66,8 +63,6 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         });
 
     }
-
-
 
     @Override
     protected void onPause() {

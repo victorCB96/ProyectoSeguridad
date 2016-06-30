@@ -13,11 +13,6 @@ import java.util.ArrayList;
  */
 public class Pelicula implements Parcelable {
 
-    public static final int CLASIFICACION_ADULTOS = 1;
-    public static final int CLASIFICACION_MAYOR_A_12 = 2;
-    public static final int CLASIFICACION_TODO_PUBLICO = 3;
-    public static final int CLASIFICACION_SUPERVISION_ADULTO = 4;
-
 
     private String nombre;
     private String sinopsis;
@@ -27,7 +22,7 @@ public class Pelicula implements Parcelable {
     private Cursor generos;
     private String sGeneros;
 
-    public Pelicula(String nombre, String sinopsis, String urlImagen, int idPelicula, int clasificacion, Cursor generos) {
+    public Pelicula(int idPelicula, String nombre, String sinopsis, String urlImagen,  int clasificacion, Cursor generos) {
         this.nombre = nombre;
         this.sinopsis = sinopsis;
         this.urlImagen = urlImagen;
@@ -112,7 +107,6 @@ public class Pelicula implements Parcelable {
 
         return sGeneros;
     }
-
 
     @Override
     public int describeContents() {

@@ -1,7 +1,9 @@
 package com.example.diego.proyectoseguridad.Vista;
 
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +22,15 @@ import java.util.List;
  */
 public class AdaptadorPeliculas extends RecyclerView.Adapter<AdaptadorPeliculas.ViewHolder> {
 
-    private List<Pelicula> peliculas = new ArrayList<>();
+    private ArrayList<Pelicula> peliculas;
 
-    public AdaptadorPeliculas(List<Pelicula> peliculas) {
-        this.peliculas = peliculas;
-    }
 
     public AdaptadorPeliculas() {
+    }
+
+    public AdaptadorPeliculas(ArrayList<Pelicula> peliculas){
+        this.peliculas = peliculas;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -39,13 +43,14 @@ public class AdaptadorPeliculas extends RecyclerView.Adapter<AdaptadorPeliculas.
         Pelicula pelicula = peliculas.get(position);
 
         Glide.with(holder.itemView.getContext())
-                .load(pelicula.getUrlImagen())
+                .load(Uri.parse(pelicula.getUrlImagen()))
                 .centerCrop()
                 .into(holder.imgPelicula);
 
+        Log.i("URL_IMAGEN",pelicula.getUrlImagen());
+
         holder.txtTitulo.setText(pelicula.getNombre());
         holder.txtGeneros.setText(pelicula.getGeneros());
-
     }
 
 
@@ -54,9 +59,10 @@ public class AdaptadorPeliculas extends RecyclerView.Adapter<AdaptadorPeliculas.
         return peliculas.size();
     }
 
-    public void actualizarPeliculas(List<Pelicula> peliculas)
+    public void actualizarPeliculas(ArrayList<Pelicula> peliculas)
     {
         this.peliculas = peliculas;
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder  {
@@ -68,7 +74,7 @@ public class AdaptadorPeliculas extends RecyclerView.Adapter<AdaptadorPeliculas.
         public ViewHolder(View itemView) {
             super(itemView);
 
-            imgPelicula = (ImageView) itemView.findViewById(R.id.imageView);
+            imgPelicula = (ImageView) itemView.findViewById(R.id.img_view_pelicula);
             txtTitulo = (TextView) itemView.findViewById(R.id.text_view_nombre);
             txtGeneros = (TextView) itemView.findViewById(R.id.text_view_genero);
         }

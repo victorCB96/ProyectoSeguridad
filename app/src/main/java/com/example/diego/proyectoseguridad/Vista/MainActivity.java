@@ -11,28 +11,32 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.diego.proyectoseguridad.Modelo.Clasificacion;
 import com.example.diego.proyectoseguridad.Modelo.Usuario;
 import com.example.diego.proyectoseguridad.Modelo.Variables;
 import com.example.diego.proyectoseguridad.Modelo.clsManejoRoles;
 import com.example.diego.proyectoseguridad.Modelo.clsManejoUsuarios;
+import com.example.diego.proyectoseguridad.Modelo.clsManejoClasificaciones;
 import com.example.diego.proyectoseguridad.R;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
     private TextView usuarioCorreo;
-    private int idUsuario; //este es el id de la consulta del login que sirve para obtener el rol en habilitarVentanas.
+   // private int idUsuario; //este es el id de la consulta del login que sirve para obtener el rol en habilitarVentanas.
 
-   private Usuario usuario;
-
+    private Usuario usuario;
+    private Cursor usuarioRoles;
+    private ArrayList<Clasificacion> clasificacionesUsuario;
 
 
     @Override
@@ -50,7 +54,10 @@ public class MainActivity extends AppCompatActivity
         }
 
         usuario = getIntent().getParcelableExtra(LoginActivity.USUARIO);
-        Log.i("Usuario main",usuario.getNombre());
+
+        clsManejoRoles roles = new clsManejoRoles(this);
+        usuarioRoles = roles.getRoles(String.valueOf(usuario.getIdUsuario()));
+        setClasificacionesUsuario();
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -63,22 +70,31 @@ public class MainActivity extends AppCompatActivity
             if (view != null) {
                 usuarioCorreo=(TextView) view.findViewById(R.id.usuarioCorreo);
                 usuarioCorreo.setText(usuario.getNombre());
-                this.habilitarVentanasRoles(view,String.valueOf(usuario.getIdUsuario()));
-                this.habilitarVentanasPermisos(view,String.valueOf(usuario.getIdUsuario()));
+
+                this.habilitarVentanasRoles(navigationView,roles);
+                this.habilitarVentanasPermisos(navigationView);
             }
         }
+
+        seleccionarItem(navigationView.getMenu().getItem(0));
 
 
     }
 
-    private void habilitarVentanasPermisos(View view,String idUsuario){
-        clsManejoUsuarios usuarios = new clsManejoUsuarios(view.getContext());
-        Cursor consulta= usuarios.getPermisosDirectosUsuario(idUsuario);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        MenuItem item_usuario = navigationView.getMenu().getItem(1);
-        MenuItem item_seguridad = navigationView.getMenu().getItem(2);
-        MenuItem item_peliculas = navigationView.getMenu().getItem(0);
+    private  void setClasificacionesUsuario(){
+        clsManejoClasificaciones manejoClasificaciones = new clsManejoClasificaciones(this);
+        clasificacionesUsuario = (ArrayList<Clasificacion>) manejoClasificaciones.getClasificacionesUsuarios(usuarioRoles);
+
+    }
+
+    private void habilitarVentanasPermisos(NavigationView view){
+        clsManejoUsuarios usuarios = new clsManejoUsuarios(view.getContext());
+        Cursor consulta= usuarios.getPermisosDirectosUsuario(String.valueOf(usuario.getIdUsuario()));
+
+        MenuItem item_usuario = view.getMenu().getItem(1);
+        MenuItem item_seguridad = view.getMenu().getItem(2);
+        MenuItem item_peliculas = view.getMenu().getItem(0);
 
         try {
             item_usuario.setEnabled(false);
@@ -140,17 +156,14 @@ public class MainActivity extends AppCompatActivity
 
 
 
-    public void habilitarVentanasRoles(View view,String idUsuario){
-        clsManejoRoles roles = new clsManejoRoles(view.getContext());
+    public void habilitarVentanasRoles(NavigationView view, clsManejoRoles roles){
+
         String idRol="";
         Cursor consulta=null;
-        Cursor consultaUsuarioRoles= roles.getRoles(idUsuario);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        MenuItem item_usuario = navigationView.getMenu().getItem(1);
-        MenuItem item_seguridad = navigationView.getMenu().getItem(2);
-        MenuItem item_peliculas = navigationView.getMenu().getItem(0);
-
+        MenuItem item_usuario = view.getMenu().getItem(1);
+        MenuItem item_seguridad = view.getMenu().getItem(2);
+        MenuItem item_peliculas = view.getMenu().getItem(0);
 
 
         try {
@@ -158,8 +171,8 @@ public class MainActivity extends AppCompatActivity
             item_seguridad.setEnabled(false);
             item_peliculas.setEnabled(false);
 
-            for(consultaUsuarioRoles.moveToFirst(); !consultaUsuarioRoles.isAfterLast(); consultaUsuarioRoles.moveToNext()){
-                idRol=String.valueOf(consultaUsuarioRoles.getInt(0));
+            for(usuarioRoles.moveToFirst(); !usuarioRoles.isAfterLast(); usuarioRoles.moveToNext()){
+                idRol=String.valueOf(usuarioRoles.getInt(0));
                 consulta= roles.consultarRoles(idRol);
                 try{
                     for(consulta.moveToFirst(); !consulta.isAfterLast(); consulta.moveToNext()){
@@ -277,7 +290,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_peliculas) {
 
-            //fragmento = FragmentClasificaciones.newInstance();
+            fragmento = FragmentClasificaciones.newInstance(clasificacionesUsuario);
             // Handle the camera action
         } else if (id == R.id.nav_usuarios) {
             fragmento= new GestionUsuariosFragment();

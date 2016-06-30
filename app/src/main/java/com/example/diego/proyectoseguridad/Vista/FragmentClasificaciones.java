@@ -9,32 +9,37 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.diego.proyectoseguridad.Modelo.Clasificacion;
 import com.example.diego.proyectoseguridad.Modelo.Usuario;
 import com.example.diego.proyectoseguridad.R;
 import com.example.diego.proyectoseguridad.Modelo.clsManejadorVentanas;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class FragmentClasificaciones extends Fragment {
 
-    private static final String USUARIO = "USUARIO";
+    public static final String CLASIFICACIONES = "CLASIFICACIONES";
     private AppBarLayout appBarLayout;
     private TabLayout pestañas;
     private ViewPager viewPager;
+    private ArrayList<Clasificacion> clasificacions;
 
     public FragmentClasificaciones() {
         // Required empty public constructor
     }
 
-    public static FragmentClasificaciones newInstance(Usuario usuario){
+    public static FragmentClasificaciones newInstance(ArrayList<Clasificacion> clasificacions){
         FragmentClasificaciones fragment = new FragmentClasificaciones();
         Bundle args = new Bundle();
-        args.putParcelable(USUARIO, usuario);
+        args.putParcelableArrayList(CLASIFICACIONES, clasificacions);
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,27 +51,30 @@ public class FragmentClasificaciones extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_clasificaciones, container, false);
         viewPager = (ViewPager) view.findViewById(R.id.view_pager);
-//        pestañas.setSelectedTabIndicatorColor(Color.BLUE);
+
+        clasificacions = getArguments().getParcelableArrayList(CLASIFICACIONES);
 
         appBarLayout = (AppBarLayout) ((View)container.getParent()).findViewById(R.id.appBar_layout);
         pestañas = new TabLayout(getActivity());
         pestañas.setTabTextColors(Color.BLACK,Color.GRAY);
+        pestañas.setSelectedTabIndicatorColor(Color.BLUE);
+        pestañas.setTabMode(TabLayout.MODE_SCROLLABLE);
         appBarLayout.addView(pestañas);
 
         poblarTab();
         pestañas.setupWithViewPager(viewPager);
 
+
         return view;
     }
 
     private void poblarTab(){
-        clsManejadorVentanas manejadorVentanas=new clsManejadorVentanas(getActivity());
         AdaptadorSecciones adaptadorSecciones = new AdaptadorSecciones(getFragmentManager());
-        Cursor cursor=manejadorVentanas.getNombreVentanas();
 
-        while (cursor.moveToNext()) {
-            adaptadorSecciones.addFragment(new FragmentPeliculas(), cursor.getString(1));
+        for ( Clasificacion clasificacion : clasificacions) {
+            adaptadorSecciones.addFragment(FragmentPeliculas.newInstace(clasificacion), clasificacion.getTipo());
         }
+
         viewPager.setAdapter(adaptadorSecciones);
     }
 
