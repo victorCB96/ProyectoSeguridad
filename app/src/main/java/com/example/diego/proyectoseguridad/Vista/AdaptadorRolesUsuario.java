@@ -51,7 +51,7 @@ public class AdaptadorRolesUsuario extends RecyclerView.Adapter<AdaptadorRolesUs
                     items.moveToPosition(position);
                     roles.add(items.getInt(0));
                 }else {
-                    roles.remove(position);
+                    roles.remove(items.getInt(0));
                 }
             }
         });
