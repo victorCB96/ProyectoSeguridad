@@ -25,4 +25,11 @@ public class clsManejadorVentanas {
         return conexion.mConsultar(query, null);
     }
 
+    public Cursor getVentanas()
+    {
+        String query;
+        query= String.format("select * from %s",TABLA_VENTANAS);
+        return conexion.mConsultar(query, null);
+    }
+
 }

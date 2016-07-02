@@ -26,6 +26,13 @@ public class clsManejoClasificaciones {
         return conexion.mConsultar(query, null);
     }
 
+    public Cursor getClasificaciones()
+    {
+        String query;
+        query= String.format("select * from %s",TABLA_CLASIFICACIONES);
+        return conexion.mConsultar(query, null);
+    }
+
     public List<Clasificacion> getClasificacionesUsuarios(Cursor roles){
 
         String query = "select C.idClasificacion, tipo from tbClasificaciones C inner join tbRolClasificacion RC on (C.idClasificacion = RC.idClasificacion) where idRol = ?";

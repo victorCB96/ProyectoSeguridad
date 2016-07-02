@@ -1,0 +1,63 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".Vista.PermisosVentanaFragment">
+
+    <GridLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:id="@+id/grid"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+         android:layout_centerHorizontal="true">
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="Ver"
+            android:id="@+id/chVer"
+            android:layout_row="0"
+            android:layout_column="4" />
+        <android.support.v7.widget.AppCompatCheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="Insertar"
+            android:id="@+id/chInsertar"
+            android:layout_row="0"
+            android:layout_column="1" />
+        <android.support.v7.widget.AppCompatCheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="Modificar"
+            android:id="@+id/chModificar"
+            android:layout_row="0"
+            android:layout_column="2" />
+        <android.support.v7.widget.AppCompatCheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="Eliminar"
+            android:id="@+id/chEliminar"
+            android:layout_row="0"
+            android:layout_column="3" />
+
+    </GridLayout>
+
+    <Button
+        android:id="@+id/btnCerrarDialogoPermisos"
+        style="?android:textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Cerrar"
+        android:textColor="@color/secondary_text"
+        android:textStyle="bold"
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_below="@id/grid"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>
