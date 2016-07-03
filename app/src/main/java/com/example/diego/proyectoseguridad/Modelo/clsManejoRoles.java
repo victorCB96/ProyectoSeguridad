@@ -18,6 +18,11 @@ public class clsManejoRoles {
         this.conexion=new clsConexion(context);
     }
 
+
+    /*public boolean insertarRol(Rol rol, Rol){
+        return conexion.mInsertarTransaccion();
+    }
+*/
     public boolean mAgregarRol(Rol rol)
     {
         ContentValues valores=new ContentValues();

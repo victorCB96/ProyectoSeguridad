@@ -24,6 +24,29 @@ public class clsConexion extends SQLiteAssetHelper{
         bd.execSQL("PRAGMA foreign_keys=ON");
     }
 
+    public boolean mInsertarTransaccion(ContentValues rolVentana, ContentValues rol, ContentValues rolClasificacion)
+    {
+        Boolean insert = false;
+        bd.beginTransaction();
+
+        try {
+            bd.insertOrThrow("tbRolVentana",null, rolVentana);
+            bd.insertOrThrow("tbRoles",null, rol);
+            bd.insertOrThrow("tbRolClasificacion",null, rolClasificacion);
+            bd.setTransactionSuccessful();
+            insert = true;
+        }
+        catch(SQLiteException e) {
+            insert = false;
+        }
+        finally {
+            bd.endTransaction();
+        }
+
+        return insert;
+
+    }
+
     public boolean mInsertar(ContentValues valores,String nombreTabla)
     {
         try{

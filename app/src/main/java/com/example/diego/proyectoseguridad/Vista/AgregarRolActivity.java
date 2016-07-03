@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.diego.proyectoseguridad.Modelo.clsManejadorVentanas;
@@ -21,6 +22,7 @@ public class AgregarRolActivity extends AppCompatActivity implements Validator.V
     private AdaptadorClasificaciones adaptadorClasificaciones;
     private AdaptadorVentanas adaptadorVentanas;
     private RecyclerView rvVentana,rvClasificaciones;
+    private Button btnAgregar;
     private clsManejoClasificaciones manejoClasificaciones;
     private clsManejadorVentanas manejadorVentanas;
     private clsManejoRoles manejoRoles;
