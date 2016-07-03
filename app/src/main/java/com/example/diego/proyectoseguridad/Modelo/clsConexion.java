@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteException;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
+import java.util.ArrayList;
+
 /**
  * Created by victor on 09/06/2016.
  */
@@ -16,25 +18,55 @@ public class clsConexion extends SQLiteAssetHelper{
 
     private static String BASE_DATOS="BDProyectoPeliculas.db";
     private SQLiteDatabase bd;
+    ArrayList<ContentValues> valoresRolVentana;
+    ArrayList<ContentValues> valoresRolClasificacion;
 
 
     public clsConexion(Context context) {
         super(context, BASE_DATOS, null, 1);
         bd=getReadableDatabase();
         bd.execSQL("PRAGMA foreign_keys=ON");
+        valoresRolVentana=new ArrayList<>();
+        valoresRolClasificacion=new ArrayList<>();
     }
 
-    public boolean mInsertarTransaccion(ContentValues rolVentana, ContentValues rol, ContentValues rolClasificacion)
+    public boolean mInsertarTransaccion(ContentValues rol)
     {
         Boolean insert = false;
         bd.beginTransaction();
-
         try {
-            bd.insertOrThrow("tbRolVentana",null, rolVentana);
-            bd.insertOrThrow("tbRoles",null, rol);
-            bd.insertOrThrow("tbRolClasificacion",null, rolClasificacion);
-            bd.setTransactionSuccessful();
-            insert = true;
+            bd.insertOrThrow("tbRoles",null,rol);
+            Cursor consulta=bd.rawQuery("Select idRol from tbRoles where nombre=?",new String[]{rol.getAsString("nombre")});
+            if(consulta.moveToFirst()){
+                this.llenarDatos(consulta.getInt(0));
+                if(!valoresRolVentana.isEmpty() && !valoresRolClasificacion.isEmpty()){
+                    for (ContentValues rolVentana: valoresRolVentana){
+                        bd.insertOrThrow("tbRolVentana",null, rolVentana);
+                    }
+                    for (ContentValues rolClasificacion: valoresRolClasificacion){
+                        bd.insertOrThrow("tbRolClasificacion",null, rolClasificacion);
+                    }
+                    bd.setTransactionSuccessful();
+                    insert = true;
+                }//fin del if que verifica que ambos array esten llenos
+
+                if(!valoresRolVentana.isEmpty()&& valoresRolClasificacion.isEmpty()){
+                    for (ContentValues rolVentana: valoresRolVentana){
+                        bd.insertOrThrow("tbRolVentana",null, rolVentana);
+                    }
+                    bd.setTransactionSuccessful();
+                    insert = true;
+                }
+
+                if(valoresRolVentana.isEmpty()&& !valoresRolClasificacion.isEmpty()){
+                    for (ContentValues rolClasificacion: valoresRolClasificacion){
+                        bd.insertOrThrow("tbRolClasificacion",null, rolClasificacion);
+                    }
+                    bd.setTransactionSuccessful();
+                    insert = true;
+                }
+            }
+
         }
         catch(SQLiteException e) {
             insert = false;
@@ -47,12 +79,36 @@ public class clsConexion extends SQLiteAssetHelper{
 
     }
 
+    private void llenarDatos(int idRol){
+
+        if(!Variables.PERMISOS.isEmpty()){
+            for(int i=0;i<Variables.PERMISOS.size();i++){
+                ContentValues valores= new ContentValues();
+                valores.put("idRol",idRol);
+                valores.put("idVentana",Variables.PERMISOS.get(i).getIdVentana());
+                valores.put("ver",Variables.PERMISOS.get(i).getVer());
+                valores.put("insertar",Variables.PERMISOS.get(i).getInsertar());
+                valores.put("modificar",Variables.PERMISOS.get(i).getModificar());
+                valores.put("eliminar",Variables.PERMISOS.get(i).getEliminar());
+                valoresRolVentana.add(valores);
+            }
+        }
+
+        if(!Variables.PERMISOS_CLASIFICACIONES.isEmpty()){
+            for(int i=0;i<Variables.PERMISOS_CLASIFICACIONES.size();i++){
+                ContentValues valores= new ContentValues();
+                valores.put("idClasificacion",Variables.PERMISOS_CLASIFICACIONES.get(i));
+                valores.put("idRol",idRol);
+                valoresRolClasificacion.add(valores);
+            }
+        }
+    }
+
     public boolean mInsertar(ContentValues valores,String nombreTabla)
     {
         try{
             bd.insert(nombreTabla,null,valores);
-            bd.close();
-
+            //bd.close();
             return true;
         }catch (SQLiteAssetException e)
         {

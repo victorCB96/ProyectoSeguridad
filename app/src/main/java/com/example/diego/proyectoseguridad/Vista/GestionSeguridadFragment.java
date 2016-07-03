@@ -69,7 +69,7 @@ public class GestionSeguridadFragment extends Fragment {
         if(requestCode == ACTIVIDAD_AGREGAR_REQUEST ) {
             if (resultCode == Activity.RESULT_OK) {
                 adaptadorSeguridad.actualizarCursor(manejoRoles.getRol());
-                Snackbar.make(getView(), "Nota Agregada", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(getView(), "Rol Agregado Correctamente", Snackbar.LENGTH_SHORT).show();
             }
         }/*
         else if(requestCode == ACTIVIDAD_DETALLE_REQUEST){
