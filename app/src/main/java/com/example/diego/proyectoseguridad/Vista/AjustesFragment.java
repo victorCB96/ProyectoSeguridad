@@ -1,109 +1,220 @@
 package com.example.diego.proyectoseguridad.Vista;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.RelativeLayout;
 
 import com.example.diego.proyectoseguridad.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link AjustesFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link AjustesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class AjustesFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class AjustesFragment extends AppCompatActivity implements View.OnClickListener {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    int theme;
+    final Context context=this;
+    boolean homeButton, themeChanged;
+    View view;
+    RelativeLayout relativeLayoutChooseTheme;
+    Intent intent;
 
-    private OnFragmentInteractionListener mListener;
 
     public AjustesFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AjustesFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AjustesFragment newInstance(String param1, String param2) {
-        AjustesFragment fragment = new AjustesFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        setContentView(R.layout.fragment_ajustes);
+        theme();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
+        getSupportActionBar().setTitle("Ajuestes");
+        relativeLayoutChooseTheme = (RelativeLayout)findViewById(R.id.relativeLayoutChooseTheme);
+        relativeLayoutChooseTheme.setOnClickListener(this);
+        fixBooleanDownload();
+        themeChanged();
+
+    }
+
+/*
+    @Override
+    public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
+        view=inflater.inflate(R.layout.fragment_ajustes, container, false);
+        relativeLayoutChooseTheme = (RelativeLayout) view.findViewById(R.id.relativeLayoutChooseTheme);
+        relativeLayoutChooseTheme.setOnClickListener(this);
+        theme();
+        themeChanged();
+        return  view;
+    }
+*/
+/*
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+*/
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item_post clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+
+            return true;
+        }
+        if (id == android.R.id.home) {
+            if (!homeButton) {
+                NavUtils.navigateUpFromSameTask(AjustesFragment.this);
+            }
+            if (homeButton) {
+                if (!themeChanged) {
+                    editor = sharedPreferences.edit();
+                    editor.putBoolean("DOWNLOAD", false);
+                    editor.apply();
+                }
+                intent = new Intent(AjustesFragment.this, MainActivity.class);
+                startActivity(intent);
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+            case R.id.relativeLayoutChooseTheme:
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                EscogerColor dialog = new EscogerColor();
+                dialog.show(fragmentManager, "fragment_color_chooser");
+                break;
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ajustes, container, false);
+    public void theme() {
+        sharedPreferences = getSharedPreferences("VALUES", Context.MODE_PRIVATE);
+        theme = sharedPreferences.getInt("THEME", 0);
+        settingTheme(theme);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    private void themeChanged() {
+        themeChanged = sharedPreferences.getBoolean("THEMECHANGED",false);
+        homeButton = true;
+    }
+    public void fixBooleanDownload() {
+
+        // Fix download boolean value
+        editor = sharedPreferences.edit();
+        editor.putBoolean("DOWNLOAD", true);
+        editor.apply();
+    }
+
+
+
+    public void setThemeFragment(int theme) {
+        switch (theme) {
+            case 1:
+                editor = sharedPreferences.edit();
+                editor.putInt("THEME", 1).apply();
+                break;
+            case 2:
+                editor = sharedPreferences.edit();
+                editor.putInt("THEME", 2).apply();
+                break;
+            case 3:
+                editor = sharedPreferences.edit();
+                editor.putInt("THEME", 3).apply();
+                break;
+            case 4:
+                editor = sharedPreferences.edit();
+                editor.putInt("THEME", 4).apply();
+                break;
+            case 5:
+                editor = sharedPreferences.edit();
+                editor.putInt("THEME", 5).apply();
+                break;
+            case 6:
+                editor = sharedPreferences.edit();
+                editor.putInt("THEME", 6).apply();
+                break;
+            case 7:
+                editor = sharedPreferences.edit();
+                editor.putInt("THEME", 7).apply();
+                break;
+            case 8:
+                editor = sharedPreferences.edit();
+                editor.putInt("THEME", 8).apply();
+                break;
+            case 9:
+                editor = sharedPreferences.edit();
+                editor.putInt("THEME", 9).apply();
+                break;
+            case 10:
+                editor = sharedPreferences.edit();
+                editor.putInt("THEME", 10).apply();
+                break;
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+    public void settingTheme(int theme) {
+        switch (theme) {
+            case 1:
+                setTheme(R.style.AppTheme);
+                break;
+            case 2:
+                setTheme(R.style.AppTheme2);
+                break;
+            case 3:
+                setTheme(R.style.AppTheme3);
+                break;
+            case 4:
+                setTheme(R.style.AppTheme4);
+                break;
+            case 5:
+                setTheme(R.style.AppTheme5);
+                break;
+            case 6:
+                setTheme(R.style.AppTheme6);
+                break;
+            case 7:
+                setTheme(R.style.AppTheme7);
+                break;
+            case 8:
+                setTheme(R.style.AppTheme8);
+                break;
+            case 9:
+                setTheme(R.style.AppTheme9);
+                break;
+            case 10:
+                setTheme(R.style.AppTheme10);
+                break;
+            default:
+                setTheme(R.style.AppTheme);
+                break;
         }
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 }
