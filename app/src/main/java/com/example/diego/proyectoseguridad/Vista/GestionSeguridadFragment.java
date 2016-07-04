@@ -45,7 +45,7 @@ public class GestionSeguridadFragment extends Fragment {
         manejoRoles= new clsManejoRoles(view.getContext());
         this.incializarAdaptador();
 
-        btnDetalle= (ImageButton) view.findViewById(R.id.btn_detalle_usuario);
+        btnDetalle= (ImageButton) view.findViewById(R.id.btn_detalle_rol);
         btn_agregarRol= (FloatingActionButton) view.findViewById(R.id.btn_agregarRol);
 
        btn_agregarRol.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +101,7 @@ public class GestionSeguridadFragment extends Fragment {
         //le estoy diciendo al recycler que se comporte como linearlayout
         rvRoles.setLayoutManager(linearLayoutManager);
 
-        adaptadorSeguridad= new AdaptadorSeguridad();
+        adaptadorSeguridad= new AdaptadorSeguridad(this);
         adaptadorSeguridad.actualizarCursor(usuarios);
         rvRoles.setAdapter(adaptadorSeguridad);
     }
