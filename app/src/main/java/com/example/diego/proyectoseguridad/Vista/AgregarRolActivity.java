@@ -8,13 +8,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.diego.proyectoseguridad.Modelo.Rol;
+import com.example.diego.proyectoseguridad.Modelo.Variables;
 import com.example.diego.proyectoseguridad.Modelo.clsManejadorVentanas;
 import com.example.diego.proyectoseguridad.Modelo.clsManejoClasificaciones;
 import com.example.diego.proyectoseguridad.Modelo.clsManejoRoles;
 import com.example.diego.proyectoseguridad.R;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import java.util.List;
 
@@ -26,14 +30,35 @@ public class AgregarRolActivity extends AppCompatActivity implements Validator.V
     private clsManejoClasificaciones manejoClasificaciones;
     private clsManejadorVentanas manejadorVentanas;
     private clsManejoRoles manejoRoles;
+    private Validator validator;
+
+    @NotEmpty(message = "Debe de asignar un nombre al rol")
+    private EditText etRol;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agregar_rol);
+        getSupportActionBar().setTitle("Agregar Rol");
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
+
+
+        validator = new Validator(this);
+        validator.setValidationListener(this);
 
         manejoClasificaciones= new clsManejoClasificaciones(getApplicationContext());
         manejadorVentanas= new clsManejadorVentanas(getApplicationContext());
         manejoRoles= new clsManejoRoles(getApplicationContext());
+        btnAgregar= (Button) findViewById(R.id.btnAgregarRol);
+        etRol=(EditText) findViewById(R.id.etRol);
+
+        btnAgregar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                validator.validate();
+            }
+        });
 
         this.inicializarAdaptadorClasificaciones();
         this.inicializarAdaptadorVentana();
@@ -72,20 +97,21 @@ public class AgregarRolActivity extends AppCompatActivity implements Validator.V
 
     @Override
     public void onValidationSucceeded() {
-        /*
-        clsManejoUsuarios manejoUsuarios = new clsManejoUsuarios(this);
-        clsConexion conexion= new clsConexion(getApplicationContext());
-        Cursor consulta= conexion.getUsuarioEspecifico( etUsername.getText().toString().trim());
+        clsManejoRoles manejoRoles= new clsManejoRoles(this);
+        Cursor consulta= manejoRoles.consultarRolPorNombre(etRol.getText().toString().trim());
         if (consulta.getCount()==0){
-            if(manejoUsuarios.mAgregarUsuario(new Usuario( etUsername.getText().toString().trim(), etPassword.getText().toString().trim() ))) {
+            if(manejoRoles.mAgregarRol(new Rol( etRol.getText().toString().trim()))) {
+                Variables.PERMISOS.clear();
+                Variables.PERMISOS_CLASIFICACIONES.clear();
                 setResult(RESULT_OK);
                 finish();
+            }else {
+                Toast.makeText(getApplicationContext(),"Debe seleccionar al menos una opcion",Toast.LENGTH_LONG).show();
             }
 
         }else{
             Toast.makeText(getApplicationContext(),"Ya existe el nombre de usuario",Toast.LENGTH_LONG).show();
         }
-        */
     }
 
     @Override

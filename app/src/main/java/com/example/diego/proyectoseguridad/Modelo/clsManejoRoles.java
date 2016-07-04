@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import java.util.ArrayList;
+
 /**
  * Created by victor on 09/06/2016.
  */
@@ -25,10 +27,10 @@ public class clsManejoRoles {
 */
     public boolean mAgregarRol(Rol rol)
     {
-        ContentValues valores=new ContentValues();
-        valores.put("nombre",rol.getNombre());
+        ContentValues valoresRol=new ContentValues();
+        valoresRol.put("nombre",rol.getNombre());
 
-        return conexion.mInsertar(valores,TABLA_ROLES);
+        return conexion.mInsertarTransaccion(valoresRol);
     }//fin del metodo mAgregarRol
 
     public boolean mEliminarRol(Rol rol)
