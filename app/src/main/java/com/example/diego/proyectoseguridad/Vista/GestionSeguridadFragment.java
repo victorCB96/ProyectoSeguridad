@@ -45,7 +45,7 @@ public class GestionSeguridadFragment extends Fragment {
         manejoRoles= new clsManejoRoles(view.getContext());
         this.incializarAdaptador();
 
-        btnDetalle= (ImageButton) view.findViewById(R.id.btn_detalle_usuario);
+        btnDetalle= (ImageButton) view.findViewById(R.id.btn_detalle_rol);
         btn_agregarRol= (FloatingActionButton) view.findViewById(R.id.btn_agregarRol);
 
        btn_agregarRol.setOnClickListener(new View.OnClickListener() {
@@ -69,20 +69,19 @@ public class GestionSeguridadFragment extends Fragment {
         if(requestCode == ACTIVIDAD_AGREGAR_REQUEST ) {
             if (resultCode == Activity.RESULT_OK) {
                 adaptadorSeguridad.actualizarCursor(manejoRoles.getRol());
-                Snackbar.make(getView(), "Nota Agregada", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(getView(), "Rol Agregado Correctamente", Snackbar.LENGTH_SHORT).show();
             }
-        }/*
+        }
         else if(requestCode == ACTIVIDAD_DETALLE_REQUEST){
-            if(resultCode == ActivityDetalleRecordatorio.RESULT_EDITAR){
-
-                Snackbar.make(getView(), "Nota Editada Correctamente", Snackbar.LENGTH_SHORT).show();
+            if(resultCode == DetalleRolActivity.RESULT_EDITAR){
+                Snackbar.make(getView(), "Rol Editado Correctamente", Snackbar.LENGTH_SHORT).show();
             }
-            else if(resultCode == ActivityDetalleRecordatorio.RESULT_ELIMINAR){
-                Snackbar.make(getView(), "Nota Eliminada Correctamente", Snackbar.LENGTH_SHORT).show();
+            else if(resultCode == DetalleRolActivity.RESULT_ELIMINAR){
+                Snackbar.make(getView(), "Rol Eliminada Correctamente", Snackbar.LENGTH_SHORT).show();
             }
 
-            adaptadorNotas.actualizarCursor(manejoNotas.getNotasCompuestas());
-        }*/
+            adaptadorSeguridad.actualizarCursor(manejoRoles.getRol());
+        }
     }
 
     private void iniciarRegistro(){
@@ -92,7 +91,7 @@ public class GestionSeguridadFragment extends Fragment {
 
 
     private void incializarAdaptador(){
-        Cursor usuarios= manejoRoles.getRol();
+        Cursor rol= manejoRoles.getRol();
         rvRoles= (RecyclerView) view.findViewById(R.id.rvRoles);
         rvRoles.setHasFixedSize(true);
 
@@ -101,8 +100,8 @@ public class GestionSeguridadFragment extends Fragment {
         //le estoy diciendo al recycler que se comporte como linearlayout
         rvRoles.setLayoutManager(linearLayoutManager);
 
-        adaptadorSeguridad= new AdaptadorSeguridad();
-        adaptadorSeguridad.actualizarCursor(usuarios);
+        adaptadorSeguridad= new AdaptadorSeguridad(this);
+        adaptadorSeguridad.actualizarCursor(rol);
         rvRoles.setAdapter(adaptadorSeguridad);
     }
 

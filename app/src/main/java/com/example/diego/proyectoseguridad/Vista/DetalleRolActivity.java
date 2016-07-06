@@ -1,10 +1,12 @@
 package com.example.diego.proyectoseguridad.Vista;
 
 import android.database.Cursor;
-import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,23 +24,27 @@ import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import java.util.List;
 
-public class AgregarRolActivity extends AppCompatActivity implements Validator.ValidationListener {
+public class DetalleRolActivity extends AppCompatActivity implements  Validator.ValidationListener{
+    public static final int RESULT_ELIMINAR = 10;
+    public static final int RESULT_EDITAR = 11;
+
     private AdaptadorClasificaciones adaptadorClasificaciones;
     private AdaptadorVentanas adaptadorVentanas;
     private RecyclerView rvVentana,rvClasificaciones;
-    private Button btnAgregar;
+    private com.getbase.floatingactionbutton.FloatingActionButton btnEliminar,btnModificar;
     private clsManejoClasificaciones manejoClasificaciones;
     private clsManejadorVentanas manejadorVentanas;
     private clsManejoRoles manejoRoles;
     private Validator validator;
 
-    @NotEmpty(message = "Debe de asignar un nombre al rol")
+    @NotEmpty(message = "Por favor digite el nuevo nombre")
     private EditText etRol;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_agregar_rol);
-        getSupportActionBar().setTitle("Agregar Rol");
+        setContentView(R.layout.activity_detalle_rol);
+        getSupportActionBar().setTitle("Detalle del Rol");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
@@ -47,26 +53,44 @@ public class AgregarRolActivity extends AppCompatActivity implements Validator.V
         validator = new Validator(this);
         validator.setValidationListener(this);
 
+
+
         manejoClasificaciones= new clsManejoClasificaciones(getApplicationContext());
         manejadorVentanas= new clsManejadorVentanas(getApplicationContext());
         manejoRoles= new clsManejoRoles(getApplicationContext());
-        btnAgregar= (Button) findViewById(R.id.btnAgregarRol);
-        etRol=(EditText) findViewById(R.id.etRol);
+        btnEliminar=(com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.fab_eliminar_rol);
+        btnModificar=(com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.fab_editar_rol);
 
-        btnAgregar.setOnClickListener(new View.OnClickListener() {
+        btnModificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 validator.validate();
             }
         });
 
+        btnEliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(manejoRoles.mEliminarRol(new Rol(getIntent().getExtras().getInt("idRol"), getIntent().getExtras().getString("nombre")))){
+                    setResult(RESULT_ELIMINAR);
+                    finish();
+                }else {
+                    Toast.makeText(getApplicationContext(),"Error a la hora de eliminar",Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+
+        etRol=(EditText) findViewById(R.id.etRolDetalle);
+        etRol.setText(getIntent().getExtras().getString("nombre"));
         this.inicializarAdaptadorClasificaciones();
         this.inicializarAdaptadorVentana();
     }
 
+    //private void eliminarRol
+
     private void inicializarAdaptadorClasificaciones(){
         Cursor clasificaciones= manejoClasificaciones.getClasificaciones();
-        clsManejoRoles manejoRoles= new clsManejoRoles(this);
         rvClasificaciones= (RecyclerView) findViewById(R.id.rvClasificacionesPeliculas);
         rvClasificaciones.setHasFixedSize(true);
 
@@ -75,7 +99,7 @@ public class AgregarRolActivity extends AppCompatActivity implements Validator.V
         //le estoy diciendo al recycler que se comporte como linearlayout
         rvClasificaciones.setLayoutManager(linearLayoutManager);
 
-        adaptadorClasificaciones= new AdaptadorClasificaciones(this);
+        adaptadorClasificaciones= new AdaptadorClasificaciones(this,new clsManejoRoles(this),String.valueOf(getIntent().getExtras().getInt("idRol")));
         adaptadorClasificaciones.actualizarCursor(clasificaciones);
         rvClasificaciones.setAdapter(adaptadorClasificaciones);
     }
@@ -90,28 +114,23 @@ public class AgregarRolActivity extends AppCompatActivity implements Validator.V
         //le estoy diciendo al recycler que se comporte como linearlayout
         rvVentana.setLayoutManager(linearLayoutManager);
 
-
-        adaptadorVentanas= new AdaptadorVentanas(this);
+        adaptadorVentanas= new AdaptadorVentanas(this,new clsManejoRoles(this),String.valueOf(getIntent().getExtras().getInt("idRol")));
         adaptadorVentanas.actualizarCursor(ventanas);
         rvVentana.setAdapter(adaptadorVentanas);
     }
 
+
     @Override
     public void onValidationSucceeded() {
         clsManejoRoles manejoRoles= new clsManejoRoles(this);
-        Cursor consulta= manejoRoles.consultarRolPorNombre(etRol.getText().toString().trim());
-        if (consulta.getCount()==0){
-            if(manejoRoles.mAgregarRol(new Rol( etRol.getText().toString().trim()))) {
-                Variables.PERMISOS.clear();
-                Variables.PERMISOS_CLASIFICACIONES.clear();
-                setResult(RESULT_OK);
-                finish();
-            }else {
-                Toast.makeText(getApplicationContext(),"Debe seleccionar al menos una opcion",Toast.LENGTH_LONG).show();
-            }
-
-        }else{
-            Toast.makeText(getApplicationContext(),"Ya existe el nombre de usuario",Toast.LENGTH_LONG).show();
+        if(manejoRoles.mModificarRol(new Rol( getIntent().getExtras().getInt("idRol"),etRol.getText().toString().trim()))) {
+            Variables.PERMISOS.clear();
+            Variables.PERMISOS_CLASIFICACIONES.clear();
+            Variables.PERMISOS_CLASIFICACIONES_ELIMINACION.clear();
+            setResult(RESULT_EDITAR);
+            finish();
+        }else {
+            Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
         }
     }
 

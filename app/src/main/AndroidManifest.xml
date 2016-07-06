@@ -31,8 +31,14 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".Vista.AgregarRolActivity"></activity>
         <activity android:name=".Vista.DetalleUsuarioActivity"></activity>
+        <activity android:name=".Vista.AgregarRolActivity" />
+        <activity android:name=".Vista.AjustesFragment">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Vista.DetalleRolActivity"></activity>
     </application>
 
 </manifest>

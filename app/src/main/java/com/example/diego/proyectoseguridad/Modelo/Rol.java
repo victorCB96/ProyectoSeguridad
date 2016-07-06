@@ -15,6 +15,10 @@ public class Rol implements Parcelable {
         this.nombre = nombre;
     }
 
+    public Rol( String nombre) {
+        this.nombre = nombre;
+    }
+
     public int getIdRol() {
         return idRol;
     }

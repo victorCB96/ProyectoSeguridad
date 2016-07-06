@@ -1,11 +1,14 @@
 package com.example.diego.proyectoseguridad.Vista;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity
 
     private DrawerLayout drawer;
     private TextView usuarioCorreo;
+    SharedPreferences sharedPreferences;
+    int theme;
    // private int idUsuario; //este es el id de la consulta del login que sirve para obtener el rol en habilitarVentanas.
 
     private Usuario usuario;
@@ -43,7 +48,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        theme();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -178,9 +183,12 @@ public class MainActivity extends AppCompatActivity
             for(usuarioRoles.moveToFirst(); !usuarioRoles.isAfterLast(); usuarioRoles.moveToNext()){
                 idRol = String.valueOf(usuarioRoles.getInt(0));
                 consulta= roles.consultarRoles(idRol);
+                Toast.makeText(this,"entre for roles",
+                        Toast.LENGTH_SHORT).show();
                 try{
                     for(consulta.moveToFirst(); !consulta.isAfterLast(); consulta.moveToNext()){
-
+                        Toast.makeText(this,"entre for consulta",
+                                Toast.LENGTH_SHORT).show();
                             if(consulta.getString(0).trim().equals( item_usuario.getTitle().toString().trim())){//consulta si tiene acceso a la ventana usuarios
                                 if(consulta.getInt(1)==1){
                                     item_usuario.setEnabled(true);
@@ -288,6 +296,7 @@ public class MainActivity extends AppCompatActivity
     private void seleccionarItem(MenuItem itemDrawer) {
 
         Fragment fragmento = null;
+        FragmentActivity frm =null;
 
         // Handle navigation view item clicks here.
         int id = itemDrawer.getItemId();
@@ -301,7 +310,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_roles) {
             fragmento= new GestionSeguridadFragment();
         } else if (id == R.id.nav_settings) {
-
+            Intent intent= new Intent(MainActivity.this,AjustesFragment.class);
+            startActivity(intent);
         } else if (id == R.id.nav_exit_session) {
             finish();
             Intent intent= new Intent(this,LoginActivity.class);
@@ -318,5 +328,48 @@ public class MainActivity extends AppCompatActivity
             getSupportActionBar().setTitle(itemDrawer.getTitle());
         }
     }//fin del metodo seleccionarItem
+    public void theme() {
+        sharedPreferences = getSharedPreferences("VALUES", Context.MODE_PRIVATE);
+        theme = sharedPreferences.getInt("THEME", 0);
+        settingTheme(theme);
+    }
+    public void settingTheme(int theme) {
+        switch (theme) {
+            case 1:
+                setTheme(R.style.AppTheme);
+                break;
+            case 2:
+                setTheme(R.style.AppTheme2);
+                break;
+            case 3:
+                setTheme(R.style.AppTheme3);
+                break;
+            case 4:
+                setTheme(R.style.AppTheme4);
+                break;
+            case 5:
+                setTheme(R.style.AppTheme5);
+                break;
+            case 6:
+                setTheme(R.style.AppTheme6);
+                break;
+            case 7:
+                setTheme(R.style.AppTheme7);
+                break;
+            case 8:
+                setTheme(R.style.AppTheme8);
+                break;
+            case 9:
+                setTheme(R.style.AppTheme9);
+                break;
+            case 10:
+                setTheme(R.style.AppTheme10);
+                break;
+            default:
+                setTheme(R.style.AppTheme);
+                break;
+        }
+    }
+
 
 }
