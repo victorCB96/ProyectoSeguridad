@@ -122,9 +122,9 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         usuario = conexion.consultarUsuario(password.getText().toString().trim(), email.getText().toString().trim());
 
         if(usuario != null){
-            if(clsBitacoras.mAgregarBitacora(this.llenarObjeto(usuario))){
-                Toast.makeText(this,"Registrado Correctamente en la Bitacora",Toast.LENGTH_SHORT).show();
-            }
+//            if(clsBitacoras.mAgregarBitacora(this.llenarObjeto(usuario))){
+//                Toast.makeText(this,"Registrado Correctamente en la Bitacora",Toast.LENGTH_SHORT).show();
+//            }
             Intent mainIntent = new Intent(this, MainActivity.class);
             mainIntent.putExtra(USUARIO, usuario );
             startActivity(mainIntent);

@@ -9,10 +9,19 @@ import android.os.Parcelable;
 public class Rol implements Parcelable {
     private int idRol;
     private String nombre;
+    private boolean asignado = false;
+
+    public Rol(int idRol, String nombre, boolean asignado) {
+        this.idRol = idRol;
+        this.nombre = nombre;
+        this.asignado = asignado;
+
+    }
 
     public Rol(int idRol, String nombre) {
         this.idRol = idRol;
         this.nombre = nombre;
+
     }
 
     public Rol( String nombre) {
@@ -35,6 +44,13 @@ public class Rol implements Parcelable {
         this.nombre = nombre;
     }
 
+    public boolean isAsignado() {
+        return asignado;
+    }
+
+    public void setAsignado(boolean asignado) {
+        this.asignado = asignado;
+    }
 
     @Override
     public int describeContents() {
@@ -50,6 +66,7 @@ public class Rol implements Parcelable {
     protected Rol(Parcel in) {
         this.idRol = in.readInt();
         this.nombre = in.readString();
+
     }
 
     public static final Parcelable.Creator<Rol> CREATOR = new Parcelable.Creator<Rol>() {
