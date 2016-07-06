@@ -108,17 +108,29 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         return "";
     }
 
+    public Bitacora llenarObjeto(Usuario usuario){
+       try
+       {
+           bitacora.setIdUsuario(usuario.getIdUsuario());
+           bitacora.setIdBitacora(1);
+           bitacora.setAccion("Logueo");
+           bitacora.setDescripcion("Se ha conectado a la app");
+           bitacora.setHora(Time.valueOf(getDateCurrentTimeZone()));
+       }
+       catch (Exception e){
+           Snackbar.make(view,"ocurrio un problema"+e, Snackbar.LENGTH_LONG).show();
+       }
+
+        return bitacora;
+    }
+
     @Override
     public void onValidationSucceeded() {
         usuario = conexion.consultarUsuario(password.getText().toString().trim(), email.getText().toString().trim());
-        bitacora.setIdUsuario(usuario.getIdUsuario());
-        bitacora.setAccion("Logueo");
-        bitacora.setDescripcion("Se ha conectado a la app");
-        bitacora.setHora(Time.valueOf(getDateCurrentTimeZone()));
+
         if(usuario != null){
-            if(clsBitacoras.mAgregarBitacora(bitacora)){
-                Toast.makeText(this,"Conectado correctamente",
-                        Toast.LENGTH_SHORT).show();
+            if(clsBitacoras.mAgregarBitacora(this.llenarObjeto(usuario))){
+                Toast.makeText(this,"Registrado Correctamente en la Bitacora",Toast.LENGTH_SHORT).show();
             }
             Intent mainIntent = new Intent(this, MainActivity.class);
             mainIntent.putExtra(USUARIO, usuario );

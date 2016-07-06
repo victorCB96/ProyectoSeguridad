@@ -29,7 +29,7 @@ public class AjustesFragment extends AppCompatActivity implements View.OnClickLi
     SharedPreferences.Editor editor;
     int theme;
     final Context context=this;
-    boolean homeButton, themeChanged;
+    boolean homeButton=false, themeChanged;
     View view;
     RelativeLayout relativeLayoutChooseTheme;
     Intent intent;
@@ -46,7 +46,7 @@ public class AjustesFragment extends AppCompatActivity implements View.OnClickLi
         theme();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
-        getSupportActionBar().setTitle("Ajuestes");
+        getSupportActionBar().setTitle("Ajustes");
         relativeLayoutChooseTheme = (RelativeLayout)findViewById(R.id.relativeLayoutChooseTheme);
         relativeLayoutChooseTheme.setOnClickListener(this);
         fixBooleanDownload();
@@ -86,16 +86,14 @@ public class AjustesFragment extends AppCompatActivity implements View.OnClickLi
         }
         if (id == android.R.id.home) {
             if (!homeButton) {
-                NavUtils.navigateUpFromSameTask(AjustesFragment.this);
-            }
+                finish();            }
             if (homeButton) {
                 if (!themeChanged) {
                     editor = sharedPreferences.edit();
                     editor.putBoolean("DOWNLOAD", false);
                     editor.apply();
                 }
-                intent = new Intent(AjustesFragment.this, MainActivity.class);
-                startActivity(intent);
+                finish();
             }
             return true;
         }

@@ -183,9 +183,12 @@ public class MainActivity extends AppCompatActivity
             for(usuarioRoles.moveToFirst(); !usuarioRoles.isAfterLast(); usuarioRoles.moveToNext()){
                 idRol = String.valueOf(usuarioRoles.getInt(0));
                 consulta= roles.consultarRoles(idRol);
+                Toast.makeText(this,"entre for roles",
+                        Toast.LENGTH_SHORT).show();
                 try{
                     for(consulta.moveToFirst(); !consulta.isAfterLast(); consulta.moveToNext()){
-
+                        Toast.makeText(this,"entre for consulta",
+                                Toast.LENGTH_SHORT).show();
                             if(consulta.getString(0).trim().equals( item_usuario.getTitle().toString().trim())){//consulta si tiene acceso a la ventana usuarios
                                 if(consulta.getInt(1)==1){
                                     item_usuario.setEnabled(true);
