@@ -21,7 +21,7 @@ public class AdaptadorClasificaciones extends RecyclerView.Adapter<AdaptadorClas
     private Cursor items;
     private int indice;
     private clsManejoRoles manejoRoles;
-    private String idRol="hola";
+    private String idRol="";
     private DetalleRolActivity detalleRolActivity;
     private AgregarRolActivity agregarRolActivity;
 

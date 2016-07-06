@@ -165,7 +165,6 @@ public class clsConexion extends SQLiteAssetHelper{
             valoresRolVentana.clear();
             this.llenarDatos(id);
             bd.update("tbRoles",rol,"idRol"+"=?", new String[]{Integer.toString(id)});
-
             Cursor consulta=this.mConsultarVariasTablas("select * from tbRolClasificacion where idRol=?",String.valueOf(id));
             if(consulta.getCount()==0){
                 if(Variables.PERMISOS_CLASIFICACIONES_ELIMINACION.isEmpty()){ //si no elimino algunas de las opciones que tiene en la base de datos
@@ -179,10 +178,13 @@ public class clsConexion extends SQLiteAssetHelper{
                         for (ContentValues valores:valoresRolClasificacion){//recorre los nuevos y los viejos valores del array
                             if(valores.getAsInteger("idClasificacion")!=consulta.getInt(1)){
                                 Log.i("dato curioso: ", "entro");
-                                bd.insertOrThrow("tbRolClasificacion",null, valores);
+                                Cursor consultaExistencia=bd.rawQuery("select * from tbRolClasificacion where idRol=? and idClasificacion=?",new String[]{Integer.toString(id),Integer.toString(valores.getAsInteger("idClasificacion"))});
+                                if(consultaExistencia.getCount()==0){
+                                    bd.insertOrThrow("tbRolClasificacion",null, valores);
+                                }
+
                             }
                         }
-
                     }else {
                         for (int i:Variables.PERMISOS_CLASIFICACIONES_ELIMINACION){
                             if(i==consulta.getInt(1)){
@@ -192,7 +194,41 @@ public class clsConexion extends SQLiteAssetHelper{
                     }
                 }//fin del for que recorre las clasificaciones asignadaas actualmente al rol que entra por parametro
             }
-            bd.update("tbRoles",rol,"idRol"+"=?", new String[]{Integer.toString(id)});
+
+            Cursor consultaVentana=this.mConsultarVariasTablas("select * from tbRolVentana where idRol=?",String.valueOf(id));
+            if(consultaVentana.getCount()==0){
+                for (ContentValues rolVentana: valoresRolVentana){
+                    bd.insertOrThrow("tbRolVentana",null, rolVentana);
+                }
+            }else {
+                for(consultaVentana.moveToFirst(); !consultaVentana.isAfterLast(); consultaVentana.moveToNext()){
+                    if(Variables.PERMISOS_ELIMINAR.isEmpty()){
+                        if(!valoresRolVentana.isEmpty()){
+                            for (ContentValues rolVentana: valoresRolVentana){
+                                if(rolVentana.getAsInteger("idVentana") == consultaVentana.getInt(1)){
+                                    bd.update("tbRolVentana",rolVentana,"idRol"+"=? and idVentana=?", new String[]{Integer.toString(id),Integer.toString(rolVentana.getAsInteger("idVentana"))});
+                                }else {
+                                    Log.i("dato: ","hizo insert");
+                                    Cursor consultaExistencia=bd.rawQuery("select * from tbRolVentana where idRol=? and idVentana=?",new String[]{Integer.toString(id),Integer.toString(rolVentana.getAsInteger("idVentana"))});
+                                    if(consultaExistencia.getCount()==0){
+                                        bd.insertOrThrow("tbRolVentana",null, rolVentana);
+                                    }else {
+                                        bd.update("tbRolVentana",rolVentana,"idRol"+"=? and idVentana=?", new String[]{Integer.toString(id),Integer.toString(rolVentana.getAsInteger("idVentana"))});
+                                    }
+
+                                }
+                            }
+                        }
+                    }else{
+                        for (RolVentana rolVentana:Variables.PERMISOS_ELIMINAR){
+                            if(rolVentana.getIdVentana()==consultaVentana.getInt(1)){
+                                bd.delete("tbRolVentana","idVentana="+"?",new String[]{Integer.toString(rolVentana.getIdVentana())});
+                            }
+                        }
+                    }
+                }
+            }
+
             bd.setTransactionSuccessful();
             modificar=true;
         }catch(SQLiteException e) {

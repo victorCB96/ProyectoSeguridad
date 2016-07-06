@@ -83,6 +83,7 @@ public class AdaptadorVentanas extends RecyclerView.Adapter<AdaptadorVentanas.Ve
                     if(agregarRolActivity!=null){
                         alertDialog.show(agregarRolActivity.getSupportFragmentManager(),"dialogo_permisos");
                     }else {
+                        alertDialog.setDetalleRolActivity(detalleRolActivity);
                         alertDialog.show(detalleRolActivity.getSupportFragmentManager(),"dialogo_permisos");
                     }
 
@@ -90,8 +91,10 @@ public class AdaptadorVentanas extends RecyclerView.Adapter<AdaptadorVentanas.Ve
                 }else{
                     items.moveToPosition(position);
                     alertDialog.setIdVentana(items.getInt(0));
+                    Variables.PERMISOS_ELIMINAR.add(new RolVentana(items.getInt(0),0,0,0,0));
                     alertDialog.setCh((AppCompatCheckBox) buttonView);
                     alertDialog.eliminarCheck();
+
                 }
 
             }

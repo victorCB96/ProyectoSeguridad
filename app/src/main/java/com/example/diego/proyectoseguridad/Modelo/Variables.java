@@ -17,6 +17,7 @@ public class Variables {
     public static ArrayList<RolVentana> PERMISOS= new ArrayList<>();
     public static ArrayList<Integer> PERMISOS_CLASIFICACIONES= new ArrayList<>();
     public static ArrayList<Integer> PERMISOS_CLASIFICACIONES_ELIMINACION= new ArrayList<>();
+    public static ArrayList<RolVentana> PERMISOS_ELIMINAR= new ArrayList<>();
 
 
 }
