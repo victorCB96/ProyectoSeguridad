@@ -76,9 +76,8 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
             }
         });
 
-        password.setText("123");
-        email.setText("admin@gmail.com");
-        validator.validate();
+
+        //validator.validate();
 
     }
 
@@ -88,16 +87,6 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         finish();
     }
 
-    public String obtenerFecha(){
-        final Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(System.currentTimeMillis());
-        Date date = cal.getTime();
-        long mHour = date.getTime();
-        int mMinute = date.getMinutes();
-        String fecha;
-
-        return fecha=""+mHour;
-    }
     public  String getDateCurrentTimeZone() {
         try{
             Calendar calendar = Calendar.getInstance();
@@ -116,7 +105,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
        try
        {
            bitacora.setIdUsuario(usuario.getIdUsuario());
-           bitacora.setIdBitacora(1);
+           //bitacora.setIdBitacora(1);
            bitacora.setAccion("Logueo");
            bitacora.setDescripcion("Se ha conectado a la app");
            bitacora.setHora(Time.valueOf(getDateCurrentTimeZone()));
