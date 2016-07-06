@@ -73,15 +73,20 @@ public class MainActivity extends AppCompatActivity
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(this);
             View view = navigationView.getHeaderView(0);
-            seleccionarItem(navigationView.getMenu().getItem(0));
+            //seleccionarItem(navigationView.getMenu().getItem(0));
 
             if (view != null) {
                 usuarioCorreo=(TextView) view.findViewById(R.id.usuarioCorreo);
                 usuarioCorreo.setText(usuario.getNombre());
+                //Cursor cursor= roles.consultarTbRolVentana(String.valueOf(usuario.getIdUsuario()));
+                clsManejoUsuarios usuarios = new clsManejoUsuarios(view.getContext());
+                Cursor consulta= usuarios.getPermisosDirectosUsuario(String.valueOf(usuario.getIdUsuario()));
+                if(consulta.getCount()==0){
+                    this.habilitarVentanasRoles(navigationView, roles);
+                }else {
 
-                this.habilitarVentanasRoles(navigationView,roles);
-                this.habilitarVentanasPermisos(navigationView);
-
+                    this.habilitarVentanasPermisos(navigationView);
+                }
             }
         }
 
