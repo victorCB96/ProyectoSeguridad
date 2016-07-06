@@ -107,6 +107,7 @@ public class clsConexion extends SQLiteAssetHelper{
     public boolean mInsertar(ContentValues valores,String nombreTabla)
     {
         try{
+            bd.insertOrThrow(nombreTabla,null,valores);
             bd.insert(nombreTabla,null,valores);
             //bd.close();
             return true;
@@ -118,10 +119,33 @@ public class clsConexion extends SQLiteAssetHelper{
         }
     }//fin del metodo insertar
 
+    public void mTransaccionInsertar(ContentValues valores,String nombreTabla) throws SQLiteException
+    {
+        bd.insertOrThrow(nombreTabla,null,valores);
+    }
+
+    public void mTrassacionModificar(ContentValues valores, String nombreTabla, String whereClause, String[] args) throws SQLiteException
+    {
+        bd.update(nombreTabla,valores,whereClause,args);
+    }
+
     public boolean mEliminar(int id,String nombreTabla)
     {
         try{
-            bd.delete(nombreTabla,"id"+"=?",new String[]{Integer.toString(id)});
+            bd.delete(nombreTabla,"id=?",new String[]{Integer.toString(id)});
+            bd.close();
+
+            return true;
+        }catch (SQLiteAssetException e)
+        {
+            return false;
+        }
+    }//fin del mmetodo eliminar
+
+    public boolean mEliminar(String nombreTabla, String whereClausule, String [] args)
+    {
+        try{
+            bd.delete(nombreTabla,whereClausule,args);
             bd.close();
 
             return true;
@@ -134,7 +158,7 @@ public class clsConexion extends SQLiteAssetHelper{
     public boolean mModificar(ContentValues valores, int id, String nombreTabla)
     {
         try {
-            bd.update(nombreTabla,valores,"id"+"=?", new String[]{Integer.toString(id)});
+            bd.update(nombreTabla,valores,"id=?", new String[]{Integer.toString(id)});
             bd.close();
 
             return true;
@@ -156,6 +180,15 @@ public class clsConexion extends SQLiteAssetHelper{
         return cursor;
     }
 
+    public SQLiteDatabase getBd(){
+        return bd;
+    }
+
+    public void mTransaccionEliminar(String nombreTabla, String whereClausule, String [] args) throws SQLiteException
+    {
+        bd.delete(nombreTabla,whereClausule,args);
+    }
+
     public boolean mModificarRol(ContentValues rol, int id)
     {
         boolean modificar=false;
@@ -165,7 +198,6 @@ public class clsConexion extends SQLiteAssetHelper{
             valoresRolVentana.clear();
             this.llenarDatos(id);
             bd.update("tbRoles",rol,"idRol"+"=?", new String[]{Integer.toString(id)});
-
             Cursor consulta=this.mConsultarVariasTablas("select * from tbRolClasificacion where idRol=?",String.valueOf(id));
             if(consulta.getCount()==0){
                 if(Variables.PERMISOS_CLASIFICACIONES_ELIMINACION.isEmpty()){ //si no elimino algunas de las opciones que tiene en la base de datos
@@ -179,10 +211,13 @@ public class clsConexion extends SQLiteAssetHelper{
                         for (ContentValues valores:valoresRolClasificacion){//recorre los nuevos y los viejos valores del array
                             if(valores.getAsInteger("idClasificacion")!=consulta.getInt(1)){
                                 Log.i("dato curioso: ", "entro");
-                                bd.insertOrThrow("tbRolClasificacion",null, valores);
+                                Cursor consultaExistencia=bd.rawQuery("select * from tbRolClasificacion where idRol=? and idClasificacion=?",new String[]{Integer.toString(id),Integer.toString(valores.getAsInteger("idClasificacion"))});
+                                if(consultaExistencia.getCount()==0){
+                                    bd.insertOrThrow("tbRolClasificacion",null, valores);
+                                }
+
                             }
                         }
-
                     }else {
                         for (int i:Variables.PERMISOS_CLASIFICACIONES_ELIMINACION){
                             if(i==consulta.getInt(1)){
@@ -192,7 +227,41 @@ public class clsConexion extends SQLiteAssetHelper{
                     }
                 }//fin del for que recorre las clasificaciones asignadaas actualmente al rol que entra por parametro
             }
-            bd.update("tbRoles",rol,"idRol"+"=?", new String[]{Integer.toString(id)});
+
+            Cursor consultaVentana=this.mConsultarVariasTablas("select * from tbRolVentana where idRol=?",String.valueOf(id));
+            if(consultaVentana.getCount()==0){
+                for (ContentValues rolVentana: valoresRolVentana){
+                    bd.insertOrThrow("tbRolVentana",null, rolVentana);
+                }
+            }else {
+                for(consultaVentana.moveToFirst(); !consultaVentana.isAfterLast(); consultaVentana.moveToNext()){
+                    if(Variables.PERMISOS_ELIMINAR.isEmpty()){
+                        if(!valoresRolVentana.isEmpty()){
+                            for (ContentValues rolVentana: valoresRolVentana){
+                                if(rolVentana.getAsInteger("idVentana") == consultaVentana.getInt(1)){
+                                    bd.update("tbRolVentana",rolVentana,"idRol"+"=? and idVentana=?", new String[]{Integer.toString(id),Integer.toString(rolVentana.getAsInteger("idVentana"))});
+                                }else {
+                                    Log.i("dato: ","hizo insert");
+                                    Cursor consultaExistencia=bd.rawQuery("select * from tbRolVentana where idRol=? and idVentana=?",new String[]{Integer.toString(id),Integer.toString(rolVentana.getAsInteger("idVentana"))});
+                                    if(consultaExistencia.getCount()==0){
+                                        bd.insertOrThrow("tbRolVentana",null, rolVentana);
+                                    }else {
+                                        bd.update("tbRolVentana",rolVentana,"idRol"+"=? and idVentana=?", new String[]{Integer.toString(id),Integer.toString(rolVentana.getAsInteger("idVentana"))});
+                                    }
+
+                                }
+                            }
+                        }
+                    }else{
+                        for (RolVentana rolVentana:Variables.PERMISOS_ELIMINAR){
+                            if(rolVentana.getIdVentana()==consultaVentana.getInt(1)){
+                                bd.delete("tbRolVentana","idVentana="+"?",new String[]{Integer.toString(rolVentana.getIdVentana())});
+                            }
+                        }
+                    }
+                }
+            }
+
             bd.setTransactionSuccessful();
             modificar=true;
         }catch(SQLiteException e) {
@@ -203,7 +272,7 @@ public class clsConexion extends SQLiteAssetHelper{
         }
 
         return modificar;
-    }//fin del metodo modificar
+    }
 
     public boolean mEliminarRol(int id)
     {
@@ -224,6 +293,5 @@ public class clsConexion extends SQLiteAssetHelper{
 
         return eliminar;
     }//fin del metodo eliminar
-
 
 }

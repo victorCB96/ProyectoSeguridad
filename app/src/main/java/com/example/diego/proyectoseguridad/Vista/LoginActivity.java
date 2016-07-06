@@ -76,6 +76,10 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
             }
         });
 
+        password.setText("123");
+        email.setText("admin@gmail.com");
+        validator.validate();
+
     }
 
     @Override

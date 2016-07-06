@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.diego.proyectoseguridad.R;
@@ -16,19 +18,43 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Us
 
     private Cursor items;
 
-    public static class UsuariosViewHolder extends RecyclerView.ViewHolder{
-        private TextView tvUsuario;
-        private TextView tvPassword;
-        private TextView tvRol;
+    private OnclickListener listener;
+
+    public interface OnclickListener{
+        void onClick(int posicion, int idUsuario, View view);
+    }
+
+    public  class UsuariosViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        public TextView tvUsuario;
+        public TextView tvCreadoPor;
+        public FrameLayout contenedor;
+
         public UsuariosViewHolder(View itemView) {
             super(itemView);
-            this.tvUsuario=(TextView) itemView.findViewById(R.id.tvUsuario);
-            this.tvPassword=(TextView) itemView.findViewById(R.id.tvContrasena);
-            this.tvRol=(TextView) itemView.findViewById(R.id.tvRoles);
+            this.tvUsuario=(TextView) itemView.findViewById(R.id.tv_nom_usuario);
+            this.tvCreadoPor=(TextView) itemView.findViewById(R.id.tv_nom_creado_por);
+            this.contenedor=(FrameLayout)itemView.findViewById(R.id.container_layout);
+            contenedor.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            listener.onClick(getAdapterPosition(), getIdUsuario(getAdapterPosition()),view);
         }
     }
 
     public AdaptadorUsuarios() {
+    }
+
+    public int getIdUsuario(int posicion){
+
+        if(items !=null){
+            if(items.moveToPosition(posicion)) {
+                return items.getInt(0);
+            }
+            else return -1;
+        }
+        else return -1;
     }
 
     @Override
@@ -45,12 +71,9 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Us
         info = items.getString(1);
         holder.tvUsuario.setText(info);
 
-        info = items.getString(2);
-        holder.tvPassword.setText(info);
+        info = items.getString(3);
+        holder.tvCreadoPor.setText(info);
 
-        info= "rol1";
-        //items.getString(3);
-        holder.tvRol.setText(info);
     }
 
     @Override
@@ -67,5 +90,8 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Us
         }
     }
 
+    public void setListener(OnclickListener listener) {
+        this.listener = listener;
+    }
 
 }

@@ -28,6 +28,8 @@ public class PermisosVentanaFragment extends DialogFragment {
     private android.support.v7.widget.AppCompatCheckBox chInsertar;
     private android.support.v7.widget.AppCompatCheckBox chModficar;
     private android.support.v7.widget.AppCompatCheckBox ch;
+
+    private DetalleRolActivity detalleRolActivity;
     Button btnCerrar;
 
     public PermisosVentanaFragment() {
@@ -93,6 +95,7 @@ public class PermisosVentanaFragment extends DialogFragment {
                         Variables.PERMISOS.get(indice).setVer(1);
                     }else{
                         Variables.PERMISOS.get(indice).setVer(0);
+
                     }
                 }
             });//Fin del metodo que escucha el checkbox
@@ -100,11 +103,9 @@ public class PermisosVentanaFragment extends DialogFragment {
             chEliminar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    //buscarVentanaPermisos();
+                    buscarVentanaPermisos();
                     if(isChecked){
                             Variables.PERMISOS.get(indice).setEliminar(1);
-                            Log.i("indice: ",""+ indice);
-                            Log.i("tamano: ",""+ Variables.PERMISOS.size());
 
                     }else{
                         Variables.PERMISOS.get(indice).setEliminar(0);
@@ -144,8 +145,10 @@ public class PermisosVentanaFragment extends DialogFragment {
                         if(Variables.PERMISOS.get(indice).getVer()==0 &&
                         Variables.PERMISOS.get(indice).getEliminar()==0 &&
                         Variables.PERMISOS.get(indice).getModificar()==0 &&
-                        Variables.PERMISOS.get(indice).getInsertar()==0)
+                        Variables.PERMISOS.get(indice).getInsertar()==0) {
                             ch.setChecked(false);
+                            Variables.PERMISOS_ELIMINAR.add(new RolVentana(getIdVentana(),0,0,0,0));
+                        }
                         dismiss();
                     }
                 }
@@ -172,7 +175,6 @@ public class PermisosVentanaFragment extends DialogFragment {
                 }
             }
         }
-
     }
 
     public void eliminarCheck(){
@@ -190,5 +192,13 @@ public class PermisosVentanaFragment extends DialogFragment {
 
     public void setCh(AppCompatCheckBox ch) {
         this.ch = ch;
+    }
+
+    public DetalleRolActivity getDetalleRolActivity() {
+        return detalleRolActivity;
+    }
+
+    public void setDetalleRolActivity(DetalleRolActivity detalleRolActivity) {
+        this.detalleRolActivity = detalleRolActivity;
     }
 }
