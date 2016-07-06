@@ -66,6 +66,7 @@ public class AgregarRolActivity extends AppCompatActivity implements Validator.V
 
     private void inicializarAdaptadorClasificaciones(){
         Cursor clasificaciones= manejoClasificaciones.getClasificaciones();
+        clsManejoRoles manejoRoles= new clsManejoRoles(this);
         rvClasificaciones= (RecyclerView) findViewById(R.id.rvClasificacionesPeliculas);
         rvClasificaciones.setHasFixedSize(true);
 
@@ -74,7 +75,7 @@ public class AgregarRolActivity extends AppCompatActivity implements Validator.V
         //le estoy diciendo al recycler que se comporte como linearlayout
         rvClasificaciones.setLayoutManager(linearLayoutManager);
 
-        adaptadorClasificaciones= new AdaptadorClasificaciones();
+        adaptadorClasificaciones= new AdaptadorClasificaciones(this);
         adaptadorClasificaciones.actualizarCursor(clasificaciones);
         rvClasificaciones.setAdapter(adaptadorClasificaciones);
     }
