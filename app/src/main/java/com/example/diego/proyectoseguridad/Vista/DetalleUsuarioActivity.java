@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.diego.proyectoseguridad.Modelo.Rol;
 import com.example.diego.proyectoseguridad.Modelo.Usuario;
+import com.example.diego.proyectoseguridad.Modelo.Variables;
 import com.example.diego.proyectoseguridad.Modelo.Ventana;
 import com.example.diego.proyectoseguridad.Modelo.clsManejadorVentanas;
 import com.example.diego.proyectoseguridad.Modelo.clsManejoRoles;
@@ -222,8 +223,8 @@ public class DetalleUsuarioActivity extends AppCompatActivity implements Validat
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.action_detalle_usuario, menu);
-        menu.findItem(R.id.action_editar).setVisible(!editarMode);
-        menu.findItem(R.id.action_eliminar).setVisible(!editarMode);
+        menu.findItem(R.id.action_editar).setVisible(!editarMode && Variables.PERMISO_EDITAR_USUARIOS);
+        menu.findItem(R.id.action_eliminar).setVisible(!editarMode && Variables.PERMISO_ELIMINAR_USUARIOS);
         return true;
     }
 

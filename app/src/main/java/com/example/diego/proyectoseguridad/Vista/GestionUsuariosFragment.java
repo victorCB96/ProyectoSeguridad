@@ -59,6 +59,7 @@ public class GestionUsuariosFragment extends Fragment implements AdaptadorUsuari
         btnDetalle= (ImageButton) view.findViewById(R.id.btn_detalle_usuario);
         btn_agregarUsuario= (FloatingActionButton) view.findViewById(R.id.btn_agregarUsuario);
 
+
         btn_agregarUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
