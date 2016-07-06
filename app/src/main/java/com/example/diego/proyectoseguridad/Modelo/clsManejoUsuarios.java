@@ -43,7 +43,7 @@ public class clsManejoUsuarios {
         try {
 
             tbUsuario.put("nombre",nuevoUsuario.getNombre());
-            tbUsuario.put("contrasena",nuevoUsuario.getContrasena());
+            tbUsuario.put("contrasena",new EncriptarContra().md5(nuevoUsuario.getContrasena()));
             tbUsuario.put("creadoPor",currentUser.getNombre());
             tbUsuario.put("fechaCreacion", fecha);
             tbUsuario.put("modificadoPor",currentUser.getNombre());

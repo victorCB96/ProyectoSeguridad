@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.diego.proyectoseguridad.Modelo.Bitacora;
+import com.example.diego.proyectoseguridad.Modelo.EncriptarContra;
 import com.example.diego.proyectoseguridad.Modelo.Usuario;
 import com.example.diego.proyectoseguridad.Modelo.clsManejoBitacoras;
 import com.example.diego.proyectoseguridad.Modelo.clsManejoUsuarios;
@@ -119,7 +120,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
     @Override
     public void onValidationSucceeded() {
-        usuario = conexion.consultarUsuario(password.getText().toString().trim(), email.getText().toString().trim());
+        usuario = conexion.consultarUsuario(new EncriptarContra().md5(password.getText().toString().trim()), email.getText().toString().trim());
 
         if(usuario != null){
 //            if(clsBitacoras.mAgregarBitacora(this.llenarObjeto(usuario))){
