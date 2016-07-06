@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.diego.proyectoseguridad.Modelo.Variables;
 import com.example.diego.proyectoseguridad.R;
 
 /**
@@ -27,8 +28,6 @@ public class AdaptadorSeguridad  extends RecyclerView.Adapter<AdaptadorSeguridad
         public SeguridadViewHolder(View itemView) {
             super(itemView);
             this.detalle=(ImageButton)itemView.findViewById(R.id.btn_detalle_rol);
-            //this.tvUsuario=(TextView) itemView.findViewById(R.id.tvUsuario);
-            //this.tvPassword=(TextView) itemView.findViewById(R.id.tvContrasena);
             this.tvRol=(TextView) itemView.findViewById(R.id.tvRol);
         }
     }
@@ -44,7 +43,7 @@ public class AdaptadorSeguridad  extends RecyclerView.Adapter<AdaptadorSeguridad
     }
 
     @Override
-    public void onBindViewHolder(final SeguridadViewHolder holder, int position) {
+    public void onBindViewHolder(final SeguridadViewHolder holder, final int position) {
         String info="";
         items.moveToPosition(position);
 
@@ -53,8 +52,14 @@ public class AdaptadorSeguridad  extends RecyclerView.Adapter<AdaptadorSeguridad
         holder.detalle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                items.moveToPosition(position);
+                Variables.PERMISOS_CLASIFICACIONES.clear();
+                Variables.PERMISOS.clear();
+
                 Intent intent= new Intent(seguridadFragment.getActivity(),DetalleRolActivity.class);
-                seguridadFragment.startActivity(intent);
+                intent.putExtra("idRol", items.getInt(0));
+                intent.putExtra("nombre",items.getString(1));
+                seguridadFragment.startActivityForResult(intent,GestionSeguridadFragment.ACTIVIDAD_DETALLE_REQUEST);
             }
         });
     }

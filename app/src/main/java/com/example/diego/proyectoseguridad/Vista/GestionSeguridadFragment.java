@@ -71,18 +71,17 @@ public class GestionSeguridadFragment extends Fragment {
                 adaptadorSeguridad.actualizarCursor(manejoRoles.getRol());
                 Snackbar.make(getView(), "Rol Agregado Correctamente", Snackbar.LENGTH_SHORT).show();
             }
-        }/*
+        }
         else if(requestCode == ACTIVIDAD_DETALLE_REQUEST){
-            if(resultCode == ActivityDetalleRecordatorio.RESULT_EDITAR){
-
-                Snackbar.make(getView(), "Nota Editada Correctamente", Snackbar.LENGTH_SHORT).show();
+            if(resultCode == DetalleRolActivity.RESULT_EDITAR){
+                Snackbar.make(getView(), "Rol Editado Correctamente", Snackbar.LENGTH_SHORT).show();
             }
-            else if(resultCode == ActivityDetalleRecordatorio.RESULT_ELIMINAR){
-                Snackbar.make(getView(), "Nota Eliminada Correctamente", Snackbar.LENGTH_SHORT).show();
+            else if(resultCode == DetalleRolActivity.RESULT_ELIMINAR){
+                Snackbar.make(getView(), "Rol Eliminada Correctamente", Snackbar.LENGTH_SHORT).show();
             }
 
-            adaptadorNotas.actualizarCursor(manejoNotas.getNotasCompuestas());
-        }*/
+            adaptadorSeguridad.actualizarCursor(manejoRoles.getRol());
+        }
     }
 
     private void iniciarRegistro(){

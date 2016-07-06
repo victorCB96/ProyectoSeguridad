@@ -3,6 +3,7 @@ package com.example.diego.proyectoseguridad.Modelo;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -35,7 +36,8 @@ public class clsManejoRoles {
 
     public boolean mEliminarRol(Rol rol)
     {
-        return conexion.mEliminar(rol.getIdRol(),TABLA_ROLES);
+        Log.i("idRol: ",""+rol.getIdRol());
+        return conexion.mEliminarRol(rol.getIdRol());
     }//fin del metodo mEliminarRol
 
     public boolean mModificarRol(Rol rol)
@@ -43,7 +45,7 @@ public class clsManejoRoles {
         ContentValues valores=new ContentValues();
         valores.put("nombre",rol.getNombre());
 
-        return conexion.mModificar(valores,rol.getIdRol(),TABLA_ROLES);
+        return conexion.mModificarRol(valores,rol.getIdRol());
     }//fin del metodo mModificarRol
 
     public Cursor getRol()
@@ -53,17 +55,6 @@ public class clsManejoRoles {
 
         return conexion.mConsultar(query, null);
     }
-
-    /*public Cursor consultarRoles(String idUsuario){
-        String query="select u.idUsuario,r.idRol,v.idVentana from tbRoles r, tbUsuarios u, tbVentanas v, tbRolUsuario ru, tbRolVentana rv " +
-                "where u.idUsuario=ru.idUsuario and ru.idRol=r.idRol " +
-                "and v.idVentana=rv.idVentana and rv.idRol=r.idRol " +
-                "and u.idUsuario=? "+
-                "group by v.idVentana, r.idRol,u.idUsuario;";
-        Cursor cursor=conexion.mConsultarVariasTablas(query,idUsuario);
-
-        return cursor;
-    }*/
 
     public Cursor getRoles(String idUsuario)
     {
@@ -81,6 +72,22 @@ public class clsManejoRoles {
         Cursor cursor=conexion.mConsultarVariasTablas(query,idRol);
 
         return cursor;
+    }
+
+
+
+    public Cursor getVentanasRoles(String idRol)
+    {
+        String query;
+        query= String.format("select idVentana,ver,insertar,modificar,eliminar from tbRolVentana where idRol=? ");
+        return conexion.mConsultarVariasTablas(query, idRol);
+    }
+
+    public Cursor getClasificacionesRoles(String idRol)
+    {
+        String query;
+        query= String.format("select idRol,idClasificacion from tbRolClasificacion where idRol=? ");
+        return conexion.mConsultarVariasTablas(query, idRol);
     }
 
 
