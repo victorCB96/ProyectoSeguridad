@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -109,7 +111,8 @@ public class MainActivity extends AppCompatActivity
 
 
             for(consulta.moveToFirst(); !consulta.isAfterLast(); consulta.moveToNext()){
-
+                Toast.makeText(this,"entre for permisos",
+                        Toast.LENGTH_SHORT).show();
                 if(consulta.getString(0).trim().equals( item_usuario.getTitle().toString().trim())){//consulta si tiene acceso a la ventana usuarios
                     if(consulta.getInt(1)==1){
                         item_usuario.setEnabled(true);
@@ -333,6 +336,8 @@ public class MainActivity extends AppCompatActivity
         theme = sharedPreferences.getInt("THEME", 0);
         settingTheme(theme);
     }
+
+
     public void settingTheme(int theme) {
         switch (theme) {
             case 1:

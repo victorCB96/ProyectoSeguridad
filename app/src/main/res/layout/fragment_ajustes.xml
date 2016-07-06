@@ -89,7 +89,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
                             android:layout_marginRight="8dp"
-                            android:text="Press to change the primary, primary dark and accent colors"
+                            android:text="Precione para configurar los colores del tema de la Aplicacion."
                             android:textAppearance="@style/TextAppearance.AppCompat.Inverse"
                             android:textColor="@color/md_secondary_text_icons"
                             android:textSize="14sp" />

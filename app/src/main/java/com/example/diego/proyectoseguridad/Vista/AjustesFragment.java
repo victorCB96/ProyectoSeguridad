@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.example.diego.proyectoseguridad.R;
 
@@ -86,6 +87,8 @@ public class AjustesFragment extends AppCompatActivity implements View.OnClickLi
         }
         if (id == android.R.id.home) {
             if (!homeButton) {
+                Toast.makeText(this,"boton home",
+                        Toast.LENGTH_SHORT).show();
                 finish();            }
             if (homeButton) {
                 if (!themeChanged) {
