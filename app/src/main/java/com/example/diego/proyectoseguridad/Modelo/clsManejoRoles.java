@@ -98,6 +98,14 @@ public class clsManejoRoles {
         return cursor;
     }
 
+    public Cursor consultarTbRolVentana(String idUsuario){
+        String query="select * from tbRolVentana where idUsuario=?";
+        Cursor cursor= conexion.mConsultarVariasTablas(query,idUsuario);
+        return cursor;
+    }
+
+
+
     public CharSequence[] nombreRolesArray(){
         Cursor roles = getRol();
         CharSequence [] nombreRoles = new CharSequence[roles.getCount()];
