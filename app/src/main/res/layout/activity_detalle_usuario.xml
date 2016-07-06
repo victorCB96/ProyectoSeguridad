@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_fecha_creacion"
+            android:text="Fecha de Creacion: "
+            android:layout_marginBottom="8dp"
+            android:paddingLeft="20dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider"
+            android:layout_marginBottom="10dp">
+        </View>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_ultima_mod"
+            android:text="Ultima modificación el:  "
+            android:paddingLeft="20dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_mod_por"
+            android:text="Por:  "
+            android:paddingLeft="20dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+        </View>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_creado_por"
+            android:text="Creado Por:  "
+            android:paddingLeft="20dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+        </View>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimary"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginTop="10dp"
+            >
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre de usuario o Correo"
+                android:id="@+id/etUsername"
+                android:padding="16dp"
+                android:maxLines="1"
+                android:singleLine="true"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimary"
+            >
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Contraseña"
+                android:id="@+id/etPassword"
+                android:padding="16dp"
+                android:maxLines="1"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:visibility="gone"
+
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimary"
+            >
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Confirmar Contraseña"
+                android:id="@+id/etConfirmPassword"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:inputType="textPassword"
+                android:padding="16dp"
+                android:visibility="gone"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="vertical"
+            android:layout_centerInParent="true"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp">
+
+            <TextView android:text="Seleccionar Roles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvRolesUsuario"
+                android:layout_gravity="right"
+                android:layout_row="1"
+                android:layout_column="1"
+                android:textStyle="bold"
+                android:textSize="15dp"/>
+
+            <TextView android:text="Seleccionar Permisos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvPermisos"
+                android:layout_row="1"
+                android:layout_column="0"
+                android:textStyle="bold"
+                android:textSize="15dp"/>
+
+        </GridLayout>
+
+
+        <Button
+            android:id="@+id/btnRegistrar"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Guardar Cambios"
+            android:textColor="@color/secondary_text"
+            android:textStyle="bold"
+            android:backgroundTint="@color/colorPrimary"
+            android:visibility="gone"
+            />
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

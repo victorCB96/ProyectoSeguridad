@@ -27,7 +27,7 @@ public class clsConexion extends SQLiteAssetHelper{
     public boolean mInsertar(ContentValues valores,String nombreTabla)
     {
         try{
-            bd.insert(nombreTabla,null,valores);
+            bd.insertOrThrow(nombreTabla,null,valores);
             bd.close();
 
             return true;
@@ -39,10 +39,33 @@ public class clsConexion extends SQLiteAssetHelper{
         }
     }//fin del metodo insertar
 
+    public void mTransaccionInsertar(ContentValues valores,String nombreTabla) throws SQLiteException
+    {
+        bd.insertOrThrow(nombreTabla,null,valores);
+    }
+
+    public void mTrassacionModificar(ContentValues valores, String nombreTabla, String whereClause, String[] args) throws SQLiteException
+    {
+        bd.update(nombreTabla,valores,whereClause,args);
+    }
+
     public boolean mEliminar(int id,String nombreTabla)
     {
         try{
-            bd.delete(nombreTabla,"id"+"=?",new String[]{Integer.toString(id)});
+            bd.delete(nombreTabla,"id=?",new String[]{Integer.toString(id)});
+            bd.close();
+
+            return true;
+        }catch (SQLiteAssetException e)
+        {
+            return false;
+        }
+    }//fin del mmetodo eliminar
+
+    public boolean mEliminar(String nombreTabla, String whereClausule, String [] args)
+    {
+        try{
+            bd.delete(nombreTabla,whereClausule,args);
             bd.close();
 
             return true;
@@ -55,7 +78,7 @@ public class clsConexion extends SQLiteAssetHelper{
     public boolean mModificar(ContentValues valores, int id, String nombreTabla)
     {
         try {
-            bd.update(nombreTabla,valores,"id"+"=?", new String[]{Integer.toString(id)});
+            bd.update(nombreTabla,valores,"id=?", new String[]{Integer.toString(id)});
             bd.close();
 
             return true;
@@ -75,6 +98,15 @@ public class clsConexion extends SQLiteAssetHelper{
     {
         Cursor cursor=bd.rawQuery(query,new String[]{idUsuario});
         return cursor;
+    }
+
+    public SQLiteDatabase getBd(){
+        return bd;
+    }
+
+    public void mTransaccionEliminar(String nombreTabla, String whereClausule, String [] args) throws SQLiteException
+    {
+        bd.delete(nombreTabla,whereClausule,args);
     }
 
 

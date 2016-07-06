@@ -12,6 +12,8 @@ public class clsManejoRoles {
 
     public static final String TABLA_ROLES="tbRoles";
     public static final String TABLA_ROLESUSUARIOS="tbRolUsuario";
+    public static final String COL_NOMBRE_ROL="nombre";
+    public static final String COL_ID_ROL="idRol";
 
     public clsManejoRoles(Context context)
     {
@@ -61,7 +63,7 @@ public class clsManejoRoles {
     public Cursor getRoles(String idUsuario)
     {
         String query;
-        query=String.format("SELECT * FROM tbRolUsuario where idUsuario=?");
+        query=String.format("SELECT RU.idRol, R.nombre FROM tbRolUsuario RU, tbRoles R where idUsuario=? and RU.idRol=R.idRol");
 
         return conexion.mConsultarVariasTablas(query,idUsuario);
     }
@@ -77,12 +79,20 @@ public class clsManejoRoles {
     }
 
 
-
     public Cursor consultarRolPorNombre(String nombre){
         String query="select idRol from tbRoles where nombre=? ";
         Cursor cursor=conexion.mConsultarVariasTablas(query,nombre);
 
         return cursor;
+    }
+
+    public CharSequence[] nombreRolesArray(){
+        Cursor roles = getRol();
+        CharSequence [] nombreRoles = new CharSequence[roles.getCount()];
+        for(int posicion = 0; roles.moveToNext(); posicion++){
+            nombreRoles[posicion] = roles.getString(1);
+        }
+        return nombreRoles;
     }
 
 

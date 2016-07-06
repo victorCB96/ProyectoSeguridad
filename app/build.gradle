@@ -30,4 +30,7 @@ dependencies {
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     compile 'com.mobsandgeeks:android-saripaar:2.0.2'
+    compile ('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.9.2@aar'){
+        transitive=true
+    }
 }

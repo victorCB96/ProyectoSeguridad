@@ -13,7 +13,7 @@
         <item
             android:id="@+id/nav_roles"
             android:icon="@drawable/seguridad"
-            android:title="Gestion Seguridad" />
+            android:title="Gestion Seguridad"/>
     </group>
 
     <item android:title="Configuraciones">

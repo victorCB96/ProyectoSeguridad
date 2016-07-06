@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(this);
             View view = navigationView.getHeaderView(0);
-            seleccionarItem(navigationView.getMenu().getItem(0));
+            seleccionarItem(navigationView.getMenu().getItem(1));
 
             if (view != null) {
                 usuarioCorreo=(TextView) view.findViewById(R.id.usuarioCorreo);
@@ -297,7 +297,7 @@ public class MainActivity extends AppCompatActivity
             fragmento = FragmentClasificaciones.newInstance(clasificacionesUsuario);
             // Handle the camera action
         } else if (id == R.id.nav_usuarios) {
-            fragmento= new GestionUsuariosFragment();
+            fragmento= GestionUsuariosFragment.newInstance(usuario);
         } else if (id == R.id.nav_roles) {
             fragmento= new GestionSeguridadFragment();
         } else if (id == R.id.nav_settings) {
