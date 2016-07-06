@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(this);
             View view = navigationView.getHeaderView(0);
-            seleccionarItem(navigationView.getMenu().getItem(1));
+            seleccionarItem(navigationView.getMenu().getItem(0));
 
             if (view != null) {
                 usuarioCorreo=(TextView) view.findViewById(R.id.usuarioCorreo);
