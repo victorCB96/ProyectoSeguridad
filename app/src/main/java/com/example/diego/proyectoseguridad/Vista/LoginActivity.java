@@ -116,7 +116,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
        try
        {
            bitacora.setIdUsuario(usuario.getIdUsuario());
-           bitacora.setIdBitacora(1);
+           //bitacora.setIdBitacora(1);
            bitacora.setAccion("Logueo");
            bitacora.setDescripcion("Se ha conectado a la app");
            bitacora.setHora(Time.valueOf(getDateCurrentTimeZone()));
