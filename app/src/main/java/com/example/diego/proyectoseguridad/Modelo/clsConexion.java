@@ -146,7 +146,6 @@ public class clsConexion extends SQLiteAssetHelper{
     {
         try{
             bd.delete(nombreTabla,whereClausule,args);
-            bd.close();
 
             return true;
         }catch (SQLiteAssetException e)
