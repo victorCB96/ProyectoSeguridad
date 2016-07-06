@@ -31,4 +31,6 @@ dependencies {
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     compile 'com.mobsandgeeks:android-saripaar:2.0.2'
     compile 'com.getbase:floatingactionbutton:1.10.0'
+
+
 }
