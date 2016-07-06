@@ -17,7 +17,7 @@ public class clsManejoBitacoras {
 
     public boolean mAgregarBitacora(Bitacora bitacora) {
         ContentValues valores = new ContentValues();
-        valores.put("idBitacora", bitacora.getIdBitacora());
+        //valores.put("idBitacora", bitacora.getIdBitacora());
         valores.put("accion", bitacora.getAccion());
         valores.put("descripcion", bitacora.getDescripcion());
         valores.put("hora",(bitacora.getHora()).toString());
