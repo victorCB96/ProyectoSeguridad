@@ -63,44 +63,30 @@ public class AdaptadorClasificaciones extends RecyclerView.Adapter<AdaptadorClas
                 if(isChecked){
                     items.moveToPosition(position);
                     buscarClasificacionesPermisos(items.getInt(0));
-                    /*if(Variables.PERMISOS_CLASIFICACIONES.isEmpty()){
-                        Variables.PERMISOS_CLASIFICACIONES.add(new RolVentana(getIdVentana(),0,0,0,0));
-                    }else{
-                        ();
-                        if(indice== -1){
-                            Variables.PERMISOS.add(new RolVentana(getIdVentana(),0,0,0,0));
-                        }else {
-                            if(Variables.PERMISOS.get(indice).getIdVentana()!=this.getIdVentana()){
-
-                                Variables.PERMISOS.add(new RolVentana(getIdVentana(),0,0,0,0));
-                            }
-                        }
-
-                    }*/
                     if(Variables.PERMISOS_CLASIFICACIONES.isEmpty()){
                         Variables.PERMISOS_CLASIFICACIONES.add(items.getInt(0));
-                        /*if(detalleRolActivity!=null){
+                        if(detalleRolActivity!=null){
                             if(!Variables.PERMISOS_CLASIFICACIONES_ELIMINACION.isEmpty()){
                                 Variables.PERMISOS_CLASIFICACIONES_ELIMINACION.remove(indice);
                             }
-                        }*/
+                        }
                     }else{
                         buscarClasificacionesPermisos(items.getInt(0));
                         if(indice== -1){
                             Variables.PERMISOS_CLASIFICACIONES.add(items.getInt(0));
-                            /*if(detalleRolActivity!=null){
+                            if(detalleRolActivity!=null){
                                 if(!Variables.PERMISOS_CLASIFICACIONES_ELIMINACION.isEmpty()){
                                     Variables.PERMISOS_CLASIFICACIONES_ELIMINACION.remove(indice);
                                 }
-                            }*/
+                            }
                         }else {
                         //if(Variables.PERMISOS_CLASIFICACIONES.get(indice)!=items.getInt(0)){
                             Variables.PERMISOS_CLASIFICACIONES.add(items.getInt(0));
-                            /*if(detalleRolActivity!=null){
+                            if(detalleRolActivity!=null){
                                 if(!Variables.PERMISOS_CLASIFICACIONES_ELIMINACION.isEmpty()){
                                     Variables.PERMISOS_CLASIFICACIONES_ELIMINACION.remove(indice);
                                 }
-                            }*/
+                            }
                         //}
 
                         }
@@ -110,7 +96,7 @@ public class AdaptadorClasificaciones extends RecyclerView.Adapter<AdaptadorClas
                     buscarClasificacionesPermisos(items.getInt(0));
                     //Log.i("borro: ", Variables.PERMISOS_CLASIFICACIONES.get(indice)+"");
                     Variables.PERMISOS_CLASIFICACIONES.remove(indice);
-                    //Variables.PERMISOS_CLASIFICACIONES_ELIMINACION.add(items.getInt(0));
+                    Variables.PERMISOS_CLASIFICACIONES_ELIMINACION.add(items.getInt(0));
                 }
             }
         });

@@ -91,7 +91,7 @@ public class GestionSeguridadFragment extends Fragment {
 
 
     private void incializarAdaptador(){
-        Cursor usuarios= manejoRoles.getRol();
+        Cursor rol= manejoRoles.getRol();
         rvRoles= (RecyclerView) view.findViewById(R.id.rvRoles);
         rvRoles.setHasFixedSize(true);
 
@@ -101,7 +101,7 @@ public class GestionSeguridadFragment extends Fragment {
         rvRoles.setLayoutManager(linearLayoutManager);
 
         adaptadorSeguridad= new AdaptadorSeguridad(this);
-        adaptadorSeguridad.actualizarCursor(usuarios);
+        adaptadorSeguridad.actualizarCursor(rol);
         rvRoles.setAdapter(adaptadorSeguridad);
     }
 

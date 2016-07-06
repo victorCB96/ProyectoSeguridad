@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
@@ -163,47 +164,37 @@ public class clsConexion extends SQLiteAssetHelper{
             valoresRolClasificacion.clear();
             valoresRolVentana.clear();
             this.llenarDatos(id);
+            bd.update("tbRoles",rol,"idRol"+"=?", new String[]{Integer.toString(id)});
+
             Cursor consulta=this.mConsultarVariasTablas("select * from tbRolClasificacion where idRol=?",String.valueOf(id));
-            for(consulta.moveToFirst(); !consulta.isAfterLast(); consulta.moveToNext()){
-                if(Variables.PERMISOS_CLASIFICACIONES_ELIMINACION.isEmpty()){
-                    for (ContentValues valores:valoresRolClasificacion){
-                        if(valores.getAsInteger("idClasificacion")==consulta.getInt(1)){
-                            bd.insertOrThrow("tbRolClasificacion",null, valores);
-                        }
-                    }
-                    bd.update("tbRoles",rol,"idRol"+"=?", new String[]{Integer.toString(id)});
-                    bd.setTransactionSuccessful();
-                }else {
-                    for (int i:Variables.PERMISOS_CLASIFICACIONES_ELIMINACION){
-                        if(i==consulta.getInt(1)){
-                            bd.delete("tbRolClasificacion","idClasificacion="+"?",new String[]{Integer.toString(consulta.getInt(consulta.getInt(1)))});
-                        }
-                    }
-                    bd.update("tbRoles",rol,"idRol"+"=?", new String[]{Integer.toString(id)});
-                    bd.setTransactionSuccessful();
-                }
-            }
-
-
-            /*for (ContentValues valores:valoresRolClasificacion){
-                for(consulta.moveToFirst(); !consulta.isAfterLast(); consulta.moveToNext()){
-                    if(valores.getAsInteger("idClasificacion")==consulta.getInt(1)){
-                        for (int i:Variables.PERMISOS_CLASIFICACIONES_ELIMINACION){
-                            if(i==consulta.getInt(1)){
-                                bd.delete("tbRolClasificacion","idClasificacion="+"?",new String[]{Integer.toString(consulta.getInt(consulta.getInt(1)))});
-                            }
-                        }
-                    }else{
+            if(consulta.getCount()==0){
+                if(Variables.PERMISOS_CLASIFICACIONES_ELIMINACION.isEmpty()){ //si no elimino algunas de las opciones que tiene en la base de datos
+                    for (ContentValues valores:valoresRolClasificacion){//recorre los nuevos y los viejos valores del array
                         bd.insertOrThrow("tbRolClasificacion",null, valores);
                     }
                 }
-            }*/
+            }else {
+                for(consulta.moveToFirst(); !consulta.isAfterLast(); consulta.moveToNext()){
+                    if(Variables.PERMISOS_CLASIFICACIONES_ELIMINACION.isEmpty()){ //si no elimino algunas de las opciones que tiene en la base de datos
+                        for (ContentValues valores:valoresRolClasificacion){//recorre los nuevos y los viejos valores del array
+                            if(valores.getAsInteger("idClasificacion")!=consulta.getInt(1)){
+                                Log.i("dato curioso: ", "entro");
+                                bd.insertOrThrow("tbRolClasificacion",null, valores);
+                            }
+                        }
 
+                    }else {
+                        for (int i:Variables.PERMISOS_CLASIFICACIONES_ELIMINACION){
+                            if(i==consulta.getInt(1)){
+                                bd.delete("tbRolClasificacion","idClasificacion="+"?",new String[]{Integer.toString(i)});
+                            }
+                        }
+                    }
+                }//fin del for que recorre las clasificaciones asignadaas actualmente al rol que entra por parametro
+            }
+            bd.update("tbRoles",rol,"idRol"+"=?", new String[]{Integer.toString(id)});
+            bd.setTransactionSuccessful();
             modificar=true;
-
-            //bd.update("tbRolVentana",rol,"id"+"=?", new String[]{Integer.toString(id)});
-            //bd.close();
-
         }catch(SQLiteException e) {
             modificar = false;
         }
