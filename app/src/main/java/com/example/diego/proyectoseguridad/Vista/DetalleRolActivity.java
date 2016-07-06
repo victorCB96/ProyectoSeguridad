@@ -2,6 +2,7 @@ package com.example.diego.proyectoseguridad.Vista;
 
 import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -64,19 +65,28 @@ public class DetalleRolActivity extends AppCompatActivity implements  Validator.
         btnModificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                validator.validate();
+                if(Variables.PERMISO_EDITAR_ROLES){
+                    validator.validate();
+                }else {
+                    Toast.makeText(getApplicationContext(),"Usted no tiene permiso para editar roles",Toast.LENGTH_LONG).show();
+                }
             }
         });
 
         btnEliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(manejoRoles.mEliminarRol(new Rol(getIntent().getExtras().getInt("idRol"), getIntent().getExtras().getString("nombre")))){
-                    setResult(RESULT_ELIMINAR);
-                    finish();
+                if(Variables.PERMISO_ELIMINAR_ROLES){
+                    if(manejoRoles.mEliminarRol(new Rol(getIntent().getExtras().getInt("idRol"), getIntent().getExtras().getString("nombre")))){
+                        setResult(RESULT_ELIMINAR);
+                        finish();
+                    }else {
+                        Toast.makeText(getApplicationContext(),"Error a la hora de eliminar",Toast.LENGTH_LONG).show();
+                    }
                 }else {
-                    Toast.makeText(getApplicationContext(),"Error a la hora de eliminar",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"Usted no tiene permiso para eliminar roles",Toast.LENGTH_LONG).show();
                 }
+
 
             }
         });
@@ -122,16 +132,18 @@ public class DetalleRolActivity extends AppCompatActivity implements  Validator.
 
     @Override
     public void onValidationSucceeded() {
-        clsManejoRoles manejoRoles= new clsManejoRoles(this);
-        if(manejoRoles.mModificarRol(new Rol( getIntent().getExtras().getInt("idRol"),etRol.getText().toString().trim()))) {
-            Variables.PERMISOS.clear();
-            Variables.PERMISOS_CLASIFICACIONES.clear();
-            Variables.PERMISOS_CLASIFICACIONES_ELIMINACION.clear();
-            setResult(RESULT_EDITAR);
-            finish();
-        }else {
-            Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
-        }
+
+            clsManejoRoles manejoRoles= new clsManejoRoles(this);
+            if(manejoRoles.mModificarRol(new Rol( getIntent().getExtras().getInt("idRol"),etRol.getText().toString().trim()))) {
+                Variables.PERMISOS.clear();
+                Variables.PERMISOS_CLASIFICACIONES.clear();
+                Variables.PERMISOS_CLASIFICACIONES_ELIMINACION.clear();
+                setResult(RESULT_EDITAR);
+                finish();
+            }else {
+                Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
+            }
+
     }
 
     @Override

@@ -20,16 +20,18 @@ public class DialogAsignarRol extends DialogFragment {
     private CharSequence[] roles;
     private boolean [] rolesChecked;
     private DialogInterface.OnMultiChoiceClickListener listener;
+    private boolean editarMode = false;
 
     public DialogAsignarRol(){
     }
 
-    public static DialogAsignarRol newInstance(CharSequence[] nombreRoles, boolean[] rolesChecked){
+    public static DialogAsignarRol newInstance(CharSequence[] nombreRoles, boolean[] rolesChecked, boolean editarMode){
         DialogAsignarRol dialog = new DialogAsignarRol();
 
         Bundle bundle = new Bundle();
         bundle.putCharSequenceArray("ROLES", nombreRoles);
         bundle.putBooleanArray("ROLES_CHECKED", rolesChecked);
+        bundle.putBoolean("EDITAR_MODE",editarMode);
         dialog.setArguments(bundle);
 
         return dialog;
@@ -40,8 +42,10 @@ public class DialogAsignarRol extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         rolesChecked = getArguments().getBooleanArray("ROLES_CHECKED");
         roles = getArguments().getCharSequenceArray("ROLES");
-
-        return createDialog();
+        editarMode = getArguments().getBoolean("EDITAR_MODE");
+        AlertDialog alertDialog = createDialog();
+        alertDialog.getListView().setEnabled(editarMode);
+        return alertDialog ;
     }
 
     public AlertDialog createDialog(){

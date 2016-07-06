@@ -43,7 +43,7 @@ public class clsManejoUsuarios {
         try {
 
             tbUsuario.put("nombre",nuevoUsuario.getNombre());
-            tbUsuario.put("contrasena",nuevoUsuario.getContrasena());
+            tbUsuario.put("contrasena",new EncriptarContra().md5(nuevoUsuario.getContrasena()));
             tbUsuario.put("creadoPor",currentUser.getNombre());
             tbUsuario.put("fechaCreacion", fecha);
             tbUsuario.put("modificadoPor",currentUser.getNombre());
@@ -114,7 +114,7 @@ public class clsManejoUsuarios {
         return isSucces;
     }//fin del metodo mEliminarUsuario
 
-    public boolean mModificarUsuario(Usuario usuario,ArrayList<Ventana> ventanas, boolean[]rolesChecked, Cursor cursorRoles)
+    public boolean mModificarUsuario(Usuario usuario,ArrayList<Ventana> ventanas, ArrayList<Rol> roles)
     {
         ContentValues tbUsuario=new ContentValues();
         ContentValues tbUsuarioVentana = new ContentValues();
@@ -133,21 +133,27 @@ public class clsManejoUsuarios {
             args = new String[]{String.valueOf(usuario.getIdUsuario())};
             conexion.mTrassacionModificar(tbUsuario,TABLA_USUARIOS,"idUsuario=?",args);
 
-//            args = new String[]{String.valueOf(usuario.getIdUsuario()),null};
-//            for (int i=0; cursorRoles.moveToNext(); i++){
-//                args[1] = String.valueOf(cursorRoles.getInt(0));
-//                if(rolesChecked[i]){
-//                    //Cursor cursor = conexion.mConsultar("select count(*) from tbRolUsuario where idRol = ? and idUsuario = ?",args);
-//                    //if(cursor.getCount() == 0) {
-//                        tbRolUsuario.put("idRol", cursorRoles.getInt(0));
-//                        tbRolUsuario.put("idUsuario", usuario.getIdUsuario());
-//                        conexion.mTransaccionInsertar(tbRolUsuario, TABLA_ROLUSUARIO);
-//                    //}
-//                }
-//                else {
-//                    conexion.mEliminar(TABLA_ROLUSUARIO, "idRol = ? and idUsuario = ?",args);
-//                }
-//            }
+
+            if(!roles.isEmpty()) {
+                args = new String[]{String.valueOf(usuario.getIdUsuario()),null};
+                for (Rol rol : roles) {
+                    args[1] = String.valueOf(rol.getIdRol());
+                    Cursor cursor = conexion.mConsultar("select idRol from tbRolUsuario where idUsuario = ? and idRol = ?",args);
+
+                    if (cursor.getCount() == 0 && rol.isAsignado()) {
+                        tbRolUsuario.put("idRol", rol.getIdRol());
+                        tbRolUsuario.put("idUsuario", usuario.getIdUsuario());
+                        conexion.mTransaccionInsertar(tbRolUsuario, TABLA_ROLUSUARIO);
+                    } else if(!rol.isAsignado()){
+                        conexion.mTransaccionEliminar(TABLA_ROLUSUARIO, "idUsuario = ? and idRol = ?", args);
+                    }
+                }
+            }
+            else {
+                args = new String[]{String.valueOf(usuario.getIdUsuario())};
+                conexion.mTransaccionEliminar(TABLA_ROLUSUARIO, "idUsuario = ?", args);
+            }
+
 
             for (Ventana ventana:ventanas) {
                 args = new String[]{String.valueOf(usuario.getIdUsuario()), String.valueOf(ventana.getIdVentana())};
