@@ -123,13 +123,14 @@ public class DetalleRolActivity extends AppCompatActivity implements  Validator.
     @Override
     public void onValidationSucceeded() {
         clsManejoRoles manejoRoles= new clsManejoRoles(this);
-        if(manejoRoles.mModificarRol(new Rol( etRol.getText().toString().trim()))) {
+        if(manejoRoles.mModificarRol(new Rol( getIntent().getExtras().getInt("idRol"),etRol.getText().toString().trim()))) {
             Variables.PERMISOS.clear();
             Variables.PERMISOS_CLASIFICACIONES.clear();
+            Variables.PERMISOS_CLASIFICACIONES_ELIMINACION.clear();
             setResult(RESULT_EDITAR);
             finish();
         }else {
-            Toast.makeText(getApplicationContext(),"Debe seleccionar al menos una opcion",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
         }
     }
 

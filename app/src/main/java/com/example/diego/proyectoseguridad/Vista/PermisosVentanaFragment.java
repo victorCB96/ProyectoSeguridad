@@ -170,7 +170,6 @@ public class PermisosVentanaFragment extends DialogFragment {
                     indice = i;
                     break;
                 }
-
             }
         }
 
