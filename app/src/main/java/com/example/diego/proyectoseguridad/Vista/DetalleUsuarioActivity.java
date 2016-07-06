@@ -289,10 +289,10 @@ public class DetalleUsuarioActivity extends AppCompatActivity implements Validat
             etUsername.setText(usuarioSelecionado.getNombre());
             etPassword.setText(usuarioSelecionado.getContrasena());
             etConfirmPassword.setText(usuarioSelecionado.getContrasena());
-            tvCreadoPor.setText("Fecha de Creación: "+usuarioSelecionado.getCreadoPor());
-            tvFechaCreacion.setText("Última modificación el: "+usuarioSelecionado.getFechaCreacion());
-            tvUltimaodificacion.setText("Por: "+usuarioSelecionado.getFechaModificacion());
-            tvModificadopor.setText("Creado Por: "+usuarioSelecionado.getModificadoPor());
+            tvCreadoPor.setText("Por: "+usuarioSelecionado.getCreadoPor());
+            tvFechaCreacion.setText("Creado el: "+usuarioSelecionado.getFechaCreacion());
+            tvUltimaodificacion.setText("Fecha de última modificación: "+usuarioSelecionado.getFechaModificacion());
+            tvModificadopor.setText("Modificado por: "+usuarioSelecionado.getModificadoPor());
         }catch (Exception e){
             Log.e("ERROR_MOSTRAR_INFO","Algun error ocurrio en la carga de datos", e);
         }
