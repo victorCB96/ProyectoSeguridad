@@ -61,6 +61,8 @@ public class DetalleRolActivity extends AppCompatActivity implements  Validator.
         manejoRoles= new clsManejoRoles(getApplicationContext());
         btnEliminar=(com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.fab_eliminar_rol);
         btnModificar=(com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.fab_editar_rol);
+        btnEliminar.setVisibility(Variables.PERMISO_ELIMINAR_ROLES?View.VISIBLE:View.INVISIBLE);
+        btnModificar.setVisibility(Variables.PERMISO_EDITAR_ROLES?View.VISIBLE:View.INVISIBLE);
 
         btnModificar.setOnClickListener(new View.OnClickListener() {
             @Override

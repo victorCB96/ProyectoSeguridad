@@ -58,17 +58,12 @@ public class GestionUsuariosFragment extends Fragment implements AdaptadorUsuari
 
         btnDetalle= (ImageButton) view.findViewById(R.id.btn_detalle_usuario);
         btn_agregarUsuario= (FloatingActionButton) view.findViewById(R.id.btn_agregarUsuario);
-
+        btn_agregarUsuario.setVisibility(Variables.PERMISO_AGREGAR_USUARIOS?View.VISIBLE:View.INVISIBLE);
 
         btn_agregarUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Variables.PERMISO_AGREGAR_USUARIOS){
                     iniciarRegistro();
-                }else {
-                    Snackbar.make(getView(),"Usted no tiene permiso para agregar usuarios",Snackbar.LENGTH_LONG).show();
-                }
-
             }
         });
 

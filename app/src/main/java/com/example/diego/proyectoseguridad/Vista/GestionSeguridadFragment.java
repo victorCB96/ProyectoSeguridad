@@ -47,15 +47,11 @@ public class GestionSeguridadFragment extends Fragment {
 
         btnDetalle= (ImageButton) view.findViewById(R.id.btn_detalle_rol);
         btn_agregarRol= (FloatingActionButton) view.findViewById(R.id.btn_agregarRol);
-
+        btn_agregarRol.setVisibility(Variables.PERMISO_AGREGAR_ROLES?View.VISIBLE:View.INVISIBLE);
        btn_agregarRol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Variables.PERMISO_AGREGAR_ROLES){
                     iniciarRegistro();
-                }else {
-                    Snackbar.make(getView(),"Usted no tiene permiso para agregar roles",Snackbar.LENGTH_LONG).show();
-                }
 
             }
         });
