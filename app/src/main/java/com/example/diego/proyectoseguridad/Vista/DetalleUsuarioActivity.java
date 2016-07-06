@@ -93,6 +93,9 @@ public class DetalleUsuarioActivity extends AppCompatActivity implements Validat
         listVentanas = manejadorVentanas.getListVentanasUser(usuarioSelecionado.getIdUsuario());
 
         Cursor cursorRolesUsuario = manejoRoles.getRoles(String.valueOf(usuarioSelecionado.getIdUsuario()));
+        Cursor cursorRoles = manejoRoles.getRol();
+
+
 
         while (cursorRolesUsuario.moveToNext()){
             for(int j=0; j<nombresRoles.length; j++){
@@ -100,6 +103,10 @@ public class DetalleUsuarioActivity extends AppCompatActivity implements Validat
                     rolesChecked[j]=true;
                 }
             }
+        }
+
+        for (int i=0; cursorRoles.moveToNext(); i++){
+            roles.add(new Rol(cursorRoles.getInt(0),cursorRoles.getString(1),rolesChecked[i]));
         }
 
         validator = new Validator(this);
@@ -129,7 +136,6 @@ public class DetalleUsuarioActivity extends AppCompatActivity implements Validat
 
     @Override
     public void onValidationSucceeded() {
-        Cursor cursorRoles = manejoRoles.getRol();
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat format =  new SimpleDateFormat("MM-d-yyyy", Locale.getDefault());
 
@@ -142,7 +148,7 @@ public class DetalleUsuarioActivity extends AppCompatActivity implements Validat
         usuarioSelecionado.setFechaModificacion(format.format(calendar.getTime()));
 
 
-        if(manejoUsuarios.mModificarUsuario(usuarioSelecionado,listVentanas,rolesChecked,cursorRoles)) {
+        if(manejoUsuarios.mModificarUsuario(usuarioSelecionado,listVentanas,roles)) {
             setResult(UPDATE_RESULT);
             setEditarMode(false);
         }
@@ -167,7 +173,8 @@ public class DetalleUsuarioActivity extends AppCompatActivity implements Validat
 
     @Override
     public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
-        rolesChecked[position] = isChecked;
+            rolesChecked[position] = isChecked;
+            roles.get(position).setAsignado(isChecked);
     }
 
     @Override
@@ -192,7 +199,7 @@ public class DetalleUsuarioActivity extends AppCompatActivity implements Validat
 
         switch (itemId){
             case R.id.tvRolesUsuario:
-                alertDialog = DialogAsignarRol.newInstance(nombresRoles, rolesChecked);
+                alertDialog = DialogAsignarRol.newInstance(nombresRoles, rolesChecked,editarMode);
                 alertDialog.show(fm, "fragment_alert_roles");
                 break;
 
@@ -210,7 +217,6 @@ public class DetalleUsuarioActivity extends AppCompatActivity implements Validat
     @Override
     public void onCheck(int groupItem, int childItem, boolean isCheck) {
         listVentanas.get(groupItem).getPermiso(childItem).setActivado(isCheck);
-        Log.i("mmm","mmm");
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

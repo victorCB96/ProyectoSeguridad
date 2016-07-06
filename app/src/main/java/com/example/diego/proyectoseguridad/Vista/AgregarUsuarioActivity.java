@@ -167,7 +167,7 @@ public class AgregarUsuarioActivity extends AppCompatActivity implements Validat
 
         switch (itemId){
             case R.id.tvRolesUsuario:
-                 alertDialog = DialogAsignarRol.newInstance(nombresRoles, rolesChecked);
+                 alertDialog = DialogAsignarRol.newInstance(nombresRoles, rolesChecked, true);
                 alertDialog.show(fm, "fragment_alert_roles");
                 break;
             case R.id.tvPermisos:
